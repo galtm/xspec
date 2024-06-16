@@ -9,30 +9,6 @@
 		-->
 
 		<!--
-			xsl:for-each
-		-->
-
-		<xsl:for-each select="1">
-			<hit />
-		</xsl:for-each>
-
-		<xsl:for-each select="()">
-			<xsl:message terminate="yes" />
-		</xsl:for-each>
-
-		<!--
-			xsl:for-each-group
-		-->
-
-		<xsl:for-each-group group-by="." select="1">
-			<hit />
-		</xsl:for-each-group>
-
-		<xsl:for-each-group group-by="." select="()">
-			<xsl:message terminate="yes" />
-		</xsl:for-each-group>
-
-		<!--
 			xsl:matching-substring
 			xsl:non-matching-substring
 		-->

@@ -11,6 +11,10 @@
           <xsl:value-of select=". * 100" />
         </node>
       </xsl:for-each>
+      <!-- Missed for-each -->
+      <xsl:for-each select="()">                                               <!-- Expected miss -->
+        <xsl:message terminate="yes" />                                        <!-- Expected miss -->
+      </xsl:for-each>                                                          <!-- Expected miss -->
     </root>
   </xsl:template>
 </xsl:stylesheet>
