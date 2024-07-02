@@ -19,9 +19,9 @@
 09: <span class="ignored">			This template overrides an imported template.</span>
 10: <span class="ignored">	--&gt;</span>
 11: <span class="ignored">	</span><span class="hit">&lt;xsl:template as="element(shield)" match="iron"&gt;</span>
-12: <span class="ignored">		</span><span class="hit">&lt;shield&gt;</span>
+12: <span class="ignored">		</span><span class="missed">&lt;shield&gt;</span>
 13: <span class="ignored">			</span><span class="hit">&lt;xsl:apply-templates select="@* | node()" /&gt;</span>
-14: <span class="ignored">		</span><span class="hit">&lt;/shield&gt;</span>
+14: <span class="ignored">		</span><span class="missed">&lt;/shield&gt;</span>
 15: <span class="ignored">	</span><span class="hit">&lt;/xsl:template&gt;</span>
 16: 
 17: <span class="ignored">	</span><span class="ignored">&lt;!--</span>
@@ -46,9 +46,9 @@
 06: <span class="ignored">		Identity template</span>
 07: <span class="ignored">	--&gt;</span>
 08: <span class="ignored">	</span><span class="hit">&lt;xsl:template as="node()" match="@* | node()"&gt;</span>
-09: <span class="ignored">		</span><span class="hit">&lt;xsl:copy&gt;</span>
+09: <span class="ignored">		</span><span class="missed">&lt;xsl:copy&gt;</span>
 10: <span class="ignored">			</span><span class="missed">&lt;xsl:apply-templates select="@* | node()" /&gt;</span>
-11: <span class="ignored">		</span><span class="hit">&lt;/xsl:copy&gt;</span>
+11: <span class="ignored">		</span><span class="missed">&lt;/xsl:copy&gt;</span>
 12: <span class="ignored">	</span><span class="hit">&lt;/xsl:template&gt;</span>
 13: 
 14: <span class="ignored">	</span><span class="ignored">&lt;!--</span>
