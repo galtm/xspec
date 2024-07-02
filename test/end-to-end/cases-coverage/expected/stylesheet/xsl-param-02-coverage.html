@@ -107,7 +107,7 @@
 097: <span class="ignored">  </span><span class="ignored">&lt;!-- Template param with multi-line sequence constructor - value provided by caller --&gt;</span>
 098: <span class="ignored">  </span><span class="hit">&lt;xsl:template name="paramTemplate04"&gt;</span>
 099: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam04"&gt;</span>
-100: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">9</span><span class="hit">&lt;/xsl:text&gt;</span><span class="ignored">                                                   </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
+100: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">9</span><span class="hit">&lt;/xsl:text&gt;</span><span class="ignored">                                                   </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
 101: <span class="ignored">      </span><span class="missed">&lt;xsl:text&gt;</span><span class="missed">9</span><span class="missed">&lt;/xsl:text&gt;</span><span class="ignored">                                                   </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
 102: <span class="ignored">      </span><span class="missed">&lt;xsl:text&gt;</span><span class="missed">9</span><span class="missed">&lt;/xsl:text&gt;</span><span class="ignored">                                                   </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
 103: <span class="ignored">    </span><span class="hit">&lt;/xsl:param&gt;</span>
@@ -153,9 +153,9 @@
 143: <span class="ignored">  </span><span class="hit">&lt;xsl:template name="paramTemplate07"&gt;</span>
 144: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-no-el1"&gt;</span><span class="missed">1000</span><span class="ignored">&lt;!--abc--&gt;</span><span class="missed">1000</span><span class="ignored">&lt;!--abc--&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 145: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-no-el2"&gt;</span><span class="ignored">&lt;!--abc--&gt;</span><span class="missed">1000</span><span class="ignored">&lt;!--abc--&gt;</span><span class="missed">1000</span><span class="hit">&lt;/xsl:param&gt;</span>
-146: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems1"&gt;</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;/xsl:param&gt;</span>
-147: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems2"&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
-148: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems3"&gt;</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
+146: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems1"&gt;</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;/xsl:param&gt;</span>
+147: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems2"&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1000</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
+148: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-elems3"&gt;</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 149: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-cond1"&gt;</span><span class="missed">1000</span><span class="hit">&lt;xsl:if test="1"&gt;</span><span class="missed">1000</span><span class="hit">&lt;/xsl:if&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 150: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam07-cond2"&gt;</span><span class="missed">1000</span><span class="missed">&lt;xsl:if test="0"&gt;</span><span class="missed">1000</span><span class="missed">&lt;/xsl:if&gt;</span><span class="hit">&lt;/xsl:param&gt;</span><span class="ignored"> </span><span class="ignored">&lt;!-- Expected miss for xsl:if and child --&gt;</span>
 151: 
@@ -189,11 +189,11 @@
 179: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-no-el2"</span>
 180: <span class="hit">      as="node()+"&gt;</span><span class="ignored">&lt;!--abc--&gt;</span><span class="missed">1100</span><span class="ignored">&lt;!--abc--&gt;</span><span class="missed">1100</span><span class="hit">&lt;/xsl:param&gt;</span>
 181: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-elems1"</span>
-182: <span class="hit">      as="node()+"&gt;</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;/xsl:param&gt;</span>
+182: <span class="hit">      as="node()+"&gt;</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;/xsl:param&gt;</span>
 183: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-elems2"</span>
-184: <span class="hit">      as="node()+"&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
+184: <span class="hit">      as="node()+"&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="missed">1100</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 185: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-elems3"</span>
-186: <span class="hit">      as="node()+"&gt;</span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
+186: <span class="hit">      as="node()+"&gt;</span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 187: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-cond1"</span>
 188: <span class="hit">      as="node()+"&gt;</span><span class="missed">1100</span><span class="hit">&lt;xsl:if test="1"&gt;</span><span class="missed">1100</span><span class="hit">&lt;/xsl:if&gt;</span><span class="hit">&lt;/xsl:param&gt;</span>
 189: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam08-cond2"</span>
@@ -225,16 +225,16 @@
 215: <span class="ignored">    relying on default value. Absence of @as in xsl:param leads to document node. --&gt;</span>
 216: <span class="ignored">  </span><span class="hit">&lt;xsl:template name="paramTemplate09"&gt;</span>
 217: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam09"&gt;</span>
-218: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">1</span><span class="hit">&lt;/xsl:text&gt;</span>
-219: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">2</span><span class="hit">&lt;/xsl:text&gt;</span>
-220: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">0</span><span class="hit">&lt;/xsl:text&gt;</span>
-221: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">0</span><span class="hit">&lt;/xsl:text&gt;</span>
+218: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">1</span><span class="hit">&lt;/xsl:text&gt;</span>
+219: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">2</span><span class="hit">&lt;/xsl:text&gt;</span>
+220: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">0</span><span class="hit">&lt;/xsl:text&gt;</span>
+221: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">0</span><span class="hit">&lt;/xsl:text&gt;</span>
 222: <span class="ignored">    </span><span class="hit">&lt;/xsl:param&gt;</span>
 223: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam09-cond1"&gt;</span>
-224: <span class="ignored">      </span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span>
+224: <span class="ignored">      </span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span>
 225: <span class="ignored">      </span><span class="hit">&lt;xsl:choose&gt;</span>
 226: <span class="ignored">        </span><span class="hit">&lt;xsl:when test="empty(irrelevant)"&gt;</span>
-227: <span class="ignored">          </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">1200</span><span class="hit">&lt;/xsl:text&gt;</span>
+227: <span class="ignored">          </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">1200</span><span class="hit">&lt;/xsl:text&gt;</span>
 228: <span class="ignored">        </span><span class="hit">&lt;/xsl:when&gt;</span>
 229: <span class="ignored">        </span><span class="missed">&lt;xsl:otherwise&gt;</span><span class="ignored">                                                        </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
 230: <span class="ignored">          </span><span class="missed">&lt;xsl:text&gt;</span><span class="missed">missed</span><span class="missed">&lt;/xsl:text&gt;</span><span class="ignored">                                          </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
@@ -252,16 +252,16 @@
 242: <span class="ignored">    relying on default value, and xsl:param uses @as --&gt;</span>
 243: <span class="ignored">  </span><span class="hit">&lt;xsl:template name="paramTemplate10"&gt;</span>
 244: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam10" as="text()+"&gt;</span>
-245: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">1</span><span class="hit">&lt;/xsl:text&gt;</span>
-246: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">3</span><span class="hit">&lt;/xsl:text&gt;</span>
-247: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">0</span><span class="hit">&lt;/xsl:text&gt;</span>
-248: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">0</span><span class="hit">&lt;/xsl:text&gt;</span>
+245: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">1</span><span class="hit">&lt;/xsl:text&gt;</span>
+246: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">3</span><span class="hit">&lt;/xsl:text&gt;</span>
+247: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">0</span><span class="hit">&lt;/xsl:text&gt;</span>
+248: <span class="ignored">      </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">0</span><span class="hit">&lt;/xsl:text&gt;</span>
 249: <span class="ignored">    </span><span class="hit">&lt;/xsl:param&gt;</span>
 250: <span class="ignored">    </span><span class="hit">&lt;xsl:param name="templateParam10-cond1" as="node()+"&gt;</span>
-251: <span class="ignored">      </span><span class="hit">&lt;a&gt;</span><span class="hit">a</span><span class="hit">&lt;/a&gt;</span>
+251: <span class="ignored">      </span><span class="hit">&lt;a&gt;</span><span class="missed">a</span><span class="hit">&lt;/a&gt;</span>
 252: <span class="ignored">      </span><span class="hit">&lt;xsl:choose&gt;</span>
 253: <span class="ignored">        </span><span class="hit">&lt;xsl:when test="empty(irrelevant)"&gt;</span>
-254: <span class="ignored">          </span><span class="hit">&lt;xsl:text&gt;</span><span class="hit">1300</span><span class="hit">&lt;/xsl:text&gt;</span>
+254: <span class="ignored">          </span><span class="hit">&lt;xsl:text&gt;</span><span class="missed">1300</span><span class="hit">&lt;/xsl:text&gt;</span>
 255: <span class="ignored">        </span><span class="hit">&lt;/xsl:when&gt;</span>
 256: <span class="ignored">        </span><span class="missed">&lt;xsl:otherwise&gt;</span><span class="ignored">                                                        </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
 257: <span class="ignored">          </span><span class="missed">&lt;xsl:text&gt;</span><span class="missed">missed</span><span class="missed">&lt;/xsl:text&gt;</span><span class="ignored">                                          </span><span class="ignored">&lt;!-- Expected miss --&gt;</span>
