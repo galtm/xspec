@@ -802,7 +802,7 @@
         -i source=report-sequence.xspec ^
         -o result="file:///%EXPECTED_REPORT:\=/%" ^
         -p auth-method=Basic ^
-        -p endpoint=http://localhost:8080/rest ^
+        -p endpoint=http://localhost:80/rest ^
         -p password="%BASEX_PASSWORD%" ^
         -p username=admin ^
         -p xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^

@@ -893,7 +893,7 @@ load bats-helper
         -i source=report-sequence.xspec \
         -o result="file:${expected_report}" \
         -p auth-method=Basic \
-        -p endpoint=http://localhost:8080/rest \
+        -p endpoint=http://localhost:80/rest \
         -p password="${basex_password}" \
         -p username=admin \
         -p xspec-home="file:${parent_dir_abs}/" \
