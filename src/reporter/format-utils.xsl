@@ -430,7 +430,7 @@
 
       <xsl:variable as="xs:string+" name="uri-or-default" select="
             if (empty($uri)) then
-            (resolve-uri(concat('test-report-colors-', $report-theme, '.css')), resolve-uri('test-report.css'))
+            (resolve-uri(concat('test-report-colors-', $report-theme, '.css')), resolve-uri('test-report-base.css'))
             else
                $uri" />
 

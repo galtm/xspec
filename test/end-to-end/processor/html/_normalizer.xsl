@@ -42,7 +42,7 @@
 	<xsl:template as="element(link)+" match="style" mode="normalizer:normalize">
 		<xsl:param as="xs:anyURI" name="tunnel_document-uri" required="yes" tunnel="yes" />
 
-		<xsl:for-each select="('test-report-colors-classic.css', 'test-report.css')">
+		<xsl:for-each select="('test-report-colors-classic.css', 'test-report-base.css')">
 			<!-- Absolute URI of CSS -->
 			<xsl:variable as="xs:anyURI" name="css-uri"
 				select="resolve-uri(concat('../../../../src/reporter/', .))" />
@@ -57,8 +57,8 @@
 	<!--
 		Normalizes the link to the external CSS file
 			Example:
-				in:  href="file:/path/to/test-report.css"
-				out: href="../path/to/test-report.css"
+				in:  href="file:/path/to/test-report-base.css"
+				out: href="../path/to/test-report-base.css"
 	-->
 	<xsl:template as="attribute(href)" match="link[@rel eq 'stylesheet']/@href"
 		mode="normalizer:normalize">
