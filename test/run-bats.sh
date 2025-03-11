@@ -66,6 +66,8 @@ unset ANT_OPTS
 
 # Unset XMLResolver.org XML Resolver environment variable
 unset XMLRESOLVER_PROPERTIES
+# Configure XMLRresolver.org XML Resolver not to use Internet for namespace URIs like http://www.functx.com 
+export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
 
 # Reset public environment variables
 export SAXON_CP="${SAXON_JAR}:${XMLRESOLVERORG_XMLRESOLVER_CP}"
