@@ -406,6 +406,9 @@ load bats-helper
 }
 
 @test "CLI -e with no failures (XQuery)" {
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     myrun ../bin/xspec.sh -e -q ../tutorial/xquery-tutorial.xspec
     [ "$status" -eq 0 ]
     [ "${lines[8]}" = "passed: 1 / pending: 0 / failed: 0 / total: 1" ]
@@ -733,6 +736,9 @@ load bats-helper
     mkdir "${tutorial_copy}"
     cp ../tutorial/xquery-tutorial.* "${tutorial_copy}"
 
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     # Run with absolute TEST_DIR
     myrun ../bin/xspec.sh -q "${tutorial_copy}/xquery-tutorial.xspec"
     [ "$status" -eq 0 ]
@@ -972,6 +978,9 @@ load bats-helper
     mkdir "${tutorial_copy}"
     cp ../tutorial/xquery-tutorial.* "${tutorial_copy}"
 
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     # Run
     myrun ant \
         -buildfile ../build.xml \
@@ -1190,6 +1199,9 @@ load bats-helper
 }
 
 @test "Ant verbose test.type (XQuery)" {
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     myrun ant \
         -buildfile ../build.xml \
         -lib "${SAXON_ANT_LIB}" \
@@ -2015,6 +2027,9 @@ load bats-helper
 #
 
 @test "Default @xquery-version" {
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     ../bin/xspec.sh -q ../tutorial/xquery-tutorial.xspec
 
     myrun cat "${TEST_DIR}/xquery-tutorial-compiled.xq"
@@ -2522,6 +2537,9 @@ load bats-helper
 }
 
 @test "Override ID generation (XQuery)" {
+    # Avoid using internet to resolve http://www.functx.com
+    export XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     myrun ant \
         -buildfile ../build.xml \
         -lib "${SAXON_ANT_LIB}" \

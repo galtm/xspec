@@ -350,6 +350,9 @@
 	</case>
 
 	<case name="CLI -e with no failures (XQuery)">
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     call :run ..\bin\xspec.bat -e -q ..\tutorial\xquery-tutorial.xspec
     call :verify_retval 0
     call :verify_line  9 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
@@ -651,6 +654,9 @@
 	</case>
 
 	<case name="invoking xspec with TEST_DIR creates files in TEST_DIR (XQuery)">
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     rem Use a fresh dir, to avoid a residue of default output dir
     set "TUTORIAL_COPY=%WORK_DIR%\tutorial %RANDOM%"
     call :mkdir "%TUTORIAL_COPY%"
@@ -871,6 +877,9 @@
     rem Unset any preset args
     set ANT_ARGS=
 
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     rem Use a fresh dir, to avoid a residue of default output dir
     set "TUTORIAL_COPY=%WORK_DIR%\tutorial %RANDOM%"
     call :mkdir "%TUTORIAL_COPY%"
@@ -1090,6 +1099,9 @@
 	</case>
 
 	<case name="Ant verbose test.type (XQuery)">
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     call :run ant ^
         -buildfile ..\build.xml ^
         -lib "%SAXON_ANT_LIB%" ^
@@ -1858,6 +1870,9 @@
 	-->
 
 	<case name="Default @xquery-version">
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     call :run ..\bin\xspec.bat -q ..\tutorial\xquery-tutorial.xspec
     call :verify_retval 0
 
@@ -2360,6 +2375,9 @@
 	</case>
 
 	<case name="Override ID generation (XQuery)">
+    rem Avoid using internet to resolve http://www.functx.com
+    set XML_CATALOG_ACCESS_EXTERNAL_DOCUMENT=""
+
     call :run ant ^
         -buildfile ..\build.xml ^
         -lib "%SAXON_ANT_LIB%" ^
