@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:package
-   name="http://example.com/csv-parser"
-   package-version="1.0.0"
-   xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-   xmlns:xs="http://www.w3.org/2001/XMLSchema"
-   xmlns:csv="http://example.com/csv"
-   exclude-result-prefixes="xs csv"
-   declared-modes="yes"
-   version="3.0">
+    name="http://example.com/csv-parser"
+    package-version="1.0.0"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:csv="http://example.com/csv"
+    exclude-result-prefixes="xs csv"
+    declared-modes="yes"
+    version="3.0">
     <!--
         xsl:package Coverage Test Case (includes xsl:expose)
         Package is https://www.w3.org/TR/xslt-30/#packages-csv-library-example
-        with the addition of the xsl:expose elements.
+        Modifications: xsl:expose elements and extra comments added.
     -->
 
     <xsl:expose component="mode" visibility="public"
@@ -135,5 +135,21 @@
                     '$1$2'))
         }</field>
     </xsl:template>
+
+    <!--
+        LICENSE NOTICE
+        
+        This file is derived from "XSL Transformations (XSLT) Version 3.0", W3C Recommendation 8 June 2017.
+        https://www.w3.org/TR/xslt-30/#packages-csv-library-example
+        
+        That document is licensed under the W3C Document License - 2023 version.
+        Copyright © 2017 World Wide Web Consortium <https://www.w3.org/> . <https://www.w3.org/copyright/document-license-2023/>
+
+        The code examples in the document are licensed under the W3C Software License. Copyright notice:
+        Copyright © 2023 W3C®. This software or document includes material copied from or derived from XSL Transformations (XSLT) Version 3.0 (https://www.w3.org/TR/xslt-30).
+        
+        Text of W3C Document license: ../../../third-party-licenses/W3C-document-license-2023.txt
+        Text of W3C Software license: ../../../third-party-licenses/W3C-software-license-2023.txt
+    -->
 
 </xsl:package>
