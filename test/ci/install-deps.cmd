@@ -40,7 +40,7 @@ rem --connect-timeout is for curl/curl#4461
     --retry-connrefused ^
     --silent ^
     --show-error ^
-    "http://archive.apache.org/dist/ant/binaries/apache-ant-%ANT_VERSION%-bin.tar.gz" ^
+    "https://downloads.apache.org/ant/binaries/apache-ant-%ANT_VERSION%-bin.tar.gz" ^
     || goto :EOF
 
 call "%~dp0extract-tgz.cmd" ^
