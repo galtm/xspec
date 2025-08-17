@@ -630,11 +630,11 @@ load bats-helper
     fi
 
     # Run series of tests, and return error messages if anything fails
-    java -jar "${XMLCALABASH3_JAR}" \
+    myrun java -jar "${XMLCALABASH3_JAR}" \
         parameters::basex-cp="${BASEX_JAR}" \
         xqs/run-tests-with-basex.xproc
 
-    [ "$status" -eq 0 ]
+    assert_regex "${output}" $'\n''--- Testing completed with no failures! ---'$'\n'
 }
 
 #

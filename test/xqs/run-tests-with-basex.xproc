@@ -42,7 +42,7 @@
          <p:choose>
             <p:when test="$test-type eq 'schematron'">
                <!-- Test for Schematron schema with XQuery language binding -->
-               <p:identity message="&#10;--- Running { $test-filename } (test for Schematron)---"/>
+               <p:identity message="&#10;--- Running { $test-filename } (test for Schematron) ---"/>
                <x:basex-xqs-harness>
                   <p:with-input pipe="result@test-file"/>
                   <p:with-option name="parameters" select="$parameters-augmented"/>
@@ -98,6 +98,6 @@
    <p:if test="string-length(.) gt 0">
       <p:error code="x:TEST-EVENT-001"/>
    </p:if>
-   <p:identity message="&#10;--- Testing completed with no failures! ---"></p:identity>
+   <p:identity message="&#10;--- Testing completed with no failures! ---&#10;"/>
    <p:sink/>
 </p:declare-step>
