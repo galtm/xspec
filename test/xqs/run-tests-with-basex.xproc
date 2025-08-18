@@ -11,15 +11,15 @@
 
    <p:documentation>
       <p>This pipeline executes all .xspec files in the test/xqs directory.</p>
+      <p>NOTE: This pipeline depends on the BaseX extension to XML Calabash 3 (v3.0.14 or later).</p>
       <p><b>Input ports:</b> None.</p>
       <p><b>Output ports:</b> None. This pipeline raises an error if any tests fail.</p>
-      <p>'basex-cp' option: Classpath for BaseX, typically the location of BaseX .jar file.</p>
       <p>'xspec-home' option: Directory of XSpec. Default: Root of this XSpec installation.</p>
       <p>'xqs-location' option: Directory of XQS. Default: lib/XQS/ under xspec-home.</p>
    </p:documentation>
 
    <p:import href="../../src/xproc3/basex/basex-xqs-harness.xproc"/>
-   <p:import href="../../src/xproc3/basex/basex-standalone-xquery-harness.xproc"/>
+   <p:import href="../../src/xproc3/saxon/saxon-xquery-harness.xproc"/>
 
    <p:option name="parameters" as="map(xs:QName,item()*)?"/>
 
@@ -51,10 +51,10 @@
             <p:otherwise>
                <!-- Test for XQuery -->
                <p:identity message="&#10;--- Running { $test-filename } (test for XQuery) ---"/>
-               <x:basex-standalone-xquery-harness>
+               <x:saxon-xquery-harness>
                   <p:with-input pipe="result@test-file"/>
                   <p:with-option name="parameters" select="$parameters-augmented"/>
-               </x:basex-standalone-xquery-harness>
+               </x:saxon-xquery-harness>
             </p:otherwise>
          </p:choose>
 
