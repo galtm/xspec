@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-2025, macos-latest]
         java: [8, 17]
         env: [saxon-12, saxon-11, saxon-10, oxygen]
         exclude:
