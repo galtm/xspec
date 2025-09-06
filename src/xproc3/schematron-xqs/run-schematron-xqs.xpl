@@ -32,7 +32,7 @@
       }"
       primary="true"/>
 
-   <p:option name="parameters" as="map(xs:QName,item()*)?"/>
+   <p:option name="parameters" as="map(xs:QName,item()*)" select="map{}"/>
 
    <!-- preprocess; uses xspec-home and xqs-location options -->
    <x:preprocess-schematron-xqs>
