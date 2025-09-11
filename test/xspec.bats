@@ -624,7 +624,7 @@ load bats-helper
 
     java -jar "${XMLCALABASH3_JAR}" \
         --input:source=../tutorial/escape-for-regex.xspec \
-        --output:result="file:${work_dir}/catalog-xproc3-xslt-test-result_%RANDOM%.html" \
+        --output:result="file:${work_dir}/catalog-xproc3-xslt-test-result_${RANDOM}.html" \
         --catalog:../catalog.xml \
         ../src/xproc3/run-xslt.xpl
 
@@ -633,7 +633,7 @@ load bats-helper
 
     java -jar "${XMLCALABASH3_JAR}" \
         --input:source=../tutorial/xquery-tutorial.xspec \
-        --output:result="file:${work_dir}/catalog-xproc3-xquery-test-result_%RANDOM%.html" \
+        --output:result="file:${work_dir}/catalog-xproc3-xquery-test-result_${RANDOM}.html" \
         --catalog:../catalog.xml \
         ../src/xproc3/run-xquery.xpl
 
@@ -681,7 +681,7 @@ load bats-helper
         com.xmlcalabash.app.Main \
         --configuration:../src/xproc3/schematron-xqs/xmlcalabash3-config.xml \
         --input:source=xqs/phases-xqs.xspec \
-        --output:result="file:${work_dir}/catalog-xproc3-schematron-xqs-test-result_%RANDOM%.html" \
+        --output:result="file:${work_dir}/catalog-xproc3-schematron-xqs-test-result_${RANDOM}.html" \
         --catalog:../catalog.xml \
         ../src/xproc3/schematron-xqs/run-schematron-xqs.xpl
 
