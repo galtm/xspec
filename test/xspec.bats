@@ -638,7 +638,8 @@ load bats-helper
         ../src/xproc3/run-xquery.xpl
 
     [ "$status" -eq 0 ]
-    [ "${lines[${#lines[@]} - 1]}" = "passed: 1 / pending: 0 / failed: 0 / total: 1" ]}
+    [ "${lines[${#lines[@]} - 1]}" = "passed: 1 / pending: 0 / failed: 0 / total: 1" ]
+}
 
 #
 # XProc 3 support for Schematron testing using XQS
