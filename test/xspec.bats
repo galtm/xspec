@@ -622,7 +622,7 @@ load bats-helper
         skip "XMLCALABASH3_JAR is not defined"
     fi
 
-    java -jar "${XMLCALABASH3_JAR}" \
+    myrun java -jar "${XMLCALABASH3_JAR}" \
         --input:source=../tutorial/escape-for-regex.xspec \
         --output:result="file:${work_dir}/catalog-xproc3-xslt-test-result_${RANDOM}.html" \
         --catalog:../catalog.xml \
@@ -631,7 +631,7 @@ load bats-helper
     [ "$status" -eq 0 ]
     [ "${lines[${#lines[@]} - 1]}" = "passed: 5 / pending: 0 / failed: 1 / total: 6" ]
 
-    java -jar "${XMLCALABASH3_JAR}" \
+    myrun java -jar "${XMLCALABASH3_JAR}" \
         --input:source=../tutorial/xquery-tutorial.xspec \
         --output:result="file:${work_dir}/catalog-xproc3-xquery-test-result_${RANDOM}.html" \
         --catalog:../catalog.xml \
