@@ -76,13 +76,7 @@
     <xspec.resources.target.root>io/xspec/xspec/impl</xspec.resources.target.root>
   </properties>
 
-  <dependencies>
-    <dependency>
-      <groupId>net.sf.saxon</groupId>
-      <artifactId>Saxon-HE</artifactId>
-      <version>12.8</version>
-    </dependency>
-  </dependencies>
+  <dependencies/>
 
   <build>
     <sourceDirectory>java</sourceDirectory>
