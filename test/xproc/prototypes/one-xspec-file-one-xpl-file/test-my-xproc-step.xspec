@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.jenitennison.com/xslt/xspec"
+    xmlns:ex="x-urn:example:xproc"
+    stylesheet="../../../test/do-nothing.xsl">
+    <x:scenario label="Calling an XProc step as a function">
+        <x:call function="ex:process">
+            <x:param>
+                <could/>
+            </x:param>
+        </x:call>
+        <x:expect label="could do something"
+            test="$x:result('result')" select="/">
+            <could do="something"/>
+        </x:expect>
+    </x:scenario>
+</x:description>
