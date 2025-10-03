@@ -771,6 +771,17 @@ load bats-helper
 }
 
 #
+# Schematron running with XQS (CLI)
+#
+
+@test "invoking xspec with -s where schema being tested requires XQS (CLI)" {
+    if [ -z "${BASEX_JAR}" ]; then
+        skip "BASEX_JAR is not defined"
+    fi
+    skip "Placeholder"
+}
+
+#
 # Skip Schematron Step (CLI)
 #
 
