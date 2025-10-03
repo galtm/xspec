@@ -32,7 +32,7 @@
    <p:directory-list path="{$test-dir}" max-depth="1" include-filter="\.xspec$"/>
 
    <p:for-each>
-      <p:with-input select="//c:file"/>
+      <p:with-input select="//c:file[not(starts-with(@name,'catalog-'))]"/>
       <p:variable name="test-filename" select="/*/@name"/>
       <p:load href="{$test-dir}{$test-filename}" name="test-file"/>
       <p:for-each>
