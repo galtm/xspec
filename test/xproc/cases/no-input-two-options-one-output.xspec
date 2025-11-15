@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+    <x:scenario label="Inheritance without override">
+        <x:scenario label="Ancestor provides attrval1">
+            <x:call step="s:no-input-two-options-one-output">
+                <x:option name="attrval1" select="1"/>
+            </x:call>
+            <x:scenario label="and child scenario provides attrval2">
+                <x:call>
+                    <x:option name="attrval2" select="2"/>
+                </x:call>
+                <x:like label="root with attributes 1 and 2"/>
+            </x:scenario>
+        </x:scenario>
+        <x:scenario label="Ancestor provides attrval2">
+            <x:call step="s:no-input-two-options-one-output">
+                <x:option name="attrval2" select="2"/>
+            </x:call>
+            <x:scenario label="and child scenario provides attrval1">
+                <x:call>
+                    <x:option name="attrval1" select="1"/>
+                </x:call>
+                <x:like label="root with attributes 1 and 2"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="Inheritance with override">
+        <x:scenario label="Ancestor provides attrval1 and attrval2">
+            <x:call step="s:no-input-two-options-one-output">
+                <x:option name="attrval1" select="1"/>
+                <x:option name="attrval2" select="2"/>
+            </x:call>
+            <x:scenario label="and child scenario overrides attrval2">
+                <x:call>
+                    <x:option name="attrval2" select="2"/>
+                </x:call>
+                <x:like label="root with attributes 1 and 2"/>
+            </x:scenario>
+        </x:scenario>
+        <x:scenario label="Ancestor provides attrval1 and attrval2">
+            <x:call step="s:no-input-two-options-one-output">
+                <x:option name="attrval1" select="'overridden'"/>
+                <x:option name="attrval2" select="2"/>
+            </x:call>
+            <x:scenario label="and child scenario overrides attrval1">
+                <x:call>
+                    <x:option name="attrval1" select="1"/>
+                </x:call>
+                <x:like label="root with attributes 1 and 2"/>
+            </x:scenario>
+        </x:scenario>
+    </x:scenario>
+    <x:scenario label="x:call/@step in different parts of scenario hierarchy">
+        <x:scenario label="Parent provides one option">
+            <x:call>
+                <x:option name="attrval2" select="2"/>
+            </x:call>
+            <x:scenario label="while child provides step and another option">
+                <x:call step="s:no-input-two-options-one-output">
+                    <x:option name="attrval1" select="1"/>
+                </x:call>
+                <x:like label="root with attributes 1 and 2"/>
+            </x:scenario>
+        </x:scenario>
+        <x:scenario label="Parent provides one option">
+            <x:call>
+                <x:option name="attrval2" select="2"/>
+            </x:call>
+            <x:scenario label="child provides another option">
+                <x:call>
+                    <x:option name="attrval1" select="1"/>
+                </x:call>
+                <x:scenario label="and grandchild provides step">
+                    <x:call step="s:no-input-two-options-one-output"/>
+                    <x:like label="root with attributes 1 and 2"/>
+                </x:scenario>
+            </x:scenario>
+        </x:scenario>       
+    </x:scenario>
+
+    <x:scenario shared="yes" label="root with attributes 1 and 2">
+        <x:expect label="root with attributes 1 and 2" port="xproc-result">
+            <root attr1="1" attr2="2"/>
+        </x:expect>
+    </x:scenario>
+</x:description>

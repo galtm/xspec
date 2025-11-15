@@ -33,6 +33,20 @@
             <param name="{.}" as="item()*" required="yes" />
          </xsl:for-each>
 
+         <xsl:if test="exists(@port) and empty($reason-for-pending)">
+            <!-- XProc: Within this x:expect element, scope $x:result to specified output port. -->
+            <if test="not('{@port}' = map:keys(${x:known-UQName('x:result')}))" xmlns:map="http://www.w3.org/2005/xpath-functions/map">
+               <message terminate="yes">
+                  <xsl:call-template name="x:prefix-diag-message">
+                     <xsl:with-param name="message"
+                        expand-text="yes">No result for output port '{@port}'.</xsl:with-param>
+                  </xsl:call-template>
+               </message>
+            </if>
+            <variable name="{x:known-UQName('x:result')}" as="item()*"
+               select="${x:known-UQName('x:result')}?{@port}"/>
+         </xsl:if>
+
          <message>
             <xsl:if test="exists($reason-for-pending)">
                <xsl:text>PENDING: </xsl:text>
@@ -217,8 +231,16 @@
                      </when>
                   </xsl:if>
                   <otherwise>
-                     <!-- If there is no data type mismatch and no x:expect/@test,
-                     there is nothing else to record here. -->
+                     <!-- XProc: If we scoped $x:result to a particular output port of the step,
+                        record that so the scoped data appears in the test result report. -->
+                     <xsl:if test="exists(@port) and empty($reason-for-pending)">
+                        <xsl:call-template name="x:call-report-sequence">
+                           <xsl:with-param name="sequence-variable-eqname"
+                              select="x:known-UQName('x:result')" />
+                        </xsl:call-template>
+                     </xsl:if>
+                     <!-- If there's no scoping, no data type mismatch, and no x:expect/@test,
+                        there is nothing else to record here and the 'otherwise' branch is empty. -->
                   </otherwise>
                </choose>
                <!-- For all x:expect syntaxes/outcomes, record the expected result in the result XML file -->

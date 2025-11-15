@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:h="http://www.w3.org/1999/xhtml"
+    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc" xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xproc="library-content-types.xpl">
+    <x:helper xproc="../../../src/xproc3/xproc-testing/wrap-standard-steps.xpl"/>
+    <x:scenario label="Description from XHTML document">
+        <x:call step="s:get-html-description">
+            <x:input port="source" href="document-xhtml.html"/>
+        </x:call>
+        <x:like label="verify returned element"/>
+    </x:scenario>
+    <x:scenario label="Description from HTML non-XML document">
+        <x:variable name="options-for-load" as="map(*)"
+            select="map{'href': 'document-not-xhtml.html' => resolve-uri($x:xspec-uri)}"/>
+        <x:call step="s:get-html-description">
+            <x:input port="source" select="pf:load($options-for-load)?result"/>
+            <!-- Note: Don't use <x:input port="source" href="document-not-xhtml.html"/> for
+                a non-well-formed HTML document (e.g., meta element missing end tag).
+                Also, the step being called expects HTML elements to be in the
+                http://www.w3.org/1999/xhtml namespace. -->
+        </x:call>
+        <x:like label="verify returned element"/>
+    </x:scenario>
+
+    <x:scenario label="Content type">
+        <x:scenario label="of XHTML input file">
+            <x:variable name="href" select="'document-xhtml.html'"/>
+            <x:like label="check content type"/>
+        </x:scenario>
+        <x:scenario label="of HTML non-XML input file">
+            <x:variable name="href" select="'document-not-xhtml.html'"/>
+            <x:like label="check content type"/>
+        </x:scenario>
+    </x:scenario>
+
+    <!-- Shared scenarios -->
+    <x:scenario shared="yes" label="verify returned element">
+        <x:expect label="is a meta element" port="xproc-result">
+            <h:meta name="description" content="Description"/>
+        </x:expect>
+    </x:scenario>
+    <x:scenario shared="yes" label="check content type">
+        <x:variable name="options-for-load" as="map(*)"
+            select="map{'href': $href => resolve-uri($x:xspec-uri)}"/>
+        <x:call step="s:get-content-type">
+            <x:input port="source" select="pf:load($options-for-load)?result"/>
+        </x:call>
+        <x:expect label="is application/xml" port="xproc-result" select="'application/xml'"/>
+    </x:scenario>
+
+</x:description>

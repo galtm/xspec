@@ -49,6 +49,9 @@
                      ../schematron/schut-to-xspec.xsl) -->
                   <xsl:sequence select="@original-xspec | @schematron" />
 
+                  <!-- Global XProc attributes. -->
+                  <xsl:sequence select="@xproc" />
+
                   <!-- Global XQuery attributes.
                      @query-at is handled by compile-xquery-tests.xsl -->
                   <xsl:sequence select="@query | @xquery-version" />

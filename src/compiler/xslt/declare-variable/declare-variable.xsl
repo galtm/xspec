@@ -58,8 +58,17 @@
 
          <xsl:choose>
             <xsl:when test="$temp-doc-uqname">
-               <xsl:variable name="selection" as="xs:string"
-                  select="(@select, '.'[current()/@href], 'node()')[1]" />
+               <!-- The expression involving x:expect is for testing XProc. If you embed nodes for
+                  an expected result and aren't filtering the actual result via @test, then you
+                  should receive a document node that contains those embedded nodes. That is
+                  because an XProc step that returns a node always returns a document node. -->
+               <xsl:variable name="selection" as="xs:string" select="
+                     (
+                     @select,
+                     '.'[current()/@href],
+                     '.'[current()/self::x:expect[@port][not(@test)]],
+                     'node()'
+                     )[1]"/>
                <xsl:attribute name="select">
                   <xsl:text expand-text="yes">${$temp-doc-uqname} ! ( {$selection} )</xsl:text>
                </xsl:attribute>
