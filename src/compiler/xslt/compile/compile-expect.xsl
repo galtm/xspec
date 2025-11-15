@@ -33,6 +33,12 @@
             <param name="{.}" as="item()*" required="yes" />
          </xsl:for-each>
 
+         <xsl:if test="exists(@port) and empty($reason-for-pending)">
+            <!-- Within this x:expect element, scope $x:result to specified output port. -->
+            <variable name="{x:known-UQName('x:result')}" as="item()*"
+               select="${x:known-UQName('x:result')}?{@port}"/>
+         </xsl:if>
+
          <message>
             <xsl:if test="exists($reason-for-pending)">
                <xsl:text>PENDING: </xsl:text>
@@ -217,8 +223,16 @@
                      </when>
                   </xsl:if>
                   <otherwise>
-                     <!-- If there is no data type mismatch and no x:expect/@test,
-                     there is nothing else to record here. -->
+                     <!-- If we scoped $x:result to a particular XProc step output port,
+                        record that so the scoped data appears in the test result report. -->
+                     <xsl:if test="exists(@port) and empty($reason-for-pending)">
+                        <xsl:call-template name="x:call-report-sequence">
+                           <xsl:with-param name="sequence-variable-eqname"
+                              select="x:known-UQName('x:result')" />
+                        </xsl:call-template>
+                     </xsl:if>
+                     <!-- If there's no scoping, no data type mismatch, and no x:expect/@test,
+                        there is nothing else to record here and the 'otherwise' branch is empty. -->
                   </otherwise>
                </choose>
                <!-- For all x:expect syntaxes/outcomes, record the expected result in the result XML file -->

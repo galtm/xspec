@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xproc="library.xpl">
+    <x:scenario label="Step does not raise error">
+        <x:call step="s:no-input-one-option-no-output-raises-error"/>
+        <x:expect label="No output, no error. XML Calabash records this as an empty map."
+            result-type="map(empty-sequence(), map(*))" select="map{}"/>
+    </x:scenario>
+    <x:scenario label="Step raises error" catch="yes">
+        <x:call step="s:no-input-one-option-no-output-raises-error">
+            <x:option name="error-msg" select="'Something went wrong'"/>
+        </x:call>
+        <x:expect label="Check error code" result-type="map(xs:string, map(*))"
+            test="$x:result?err?code" select="QName('', 'error-from-my-xproc-step')"/>
+        <x:pending>
+            <x:label>Despite fix for https://codeberg.org/xmlcalabash/xmlcalabash3/issues/341
+                and subsequent issue 353, I'm seeing a description of application/xml document
+                instead of my custom error description.</x:label>
+            <x:expect label="Check error description (generic)" result-type="map(xs:string, map(*))"
+                test="$x:result?err?description"
+                select="'Pipeline execution failed(error-from-my-xproc-step: application/xml document)'"/>
+            <x:expect label="Check error description" result-type="map(xs:string, map(*))"
+                test="$x:result?err?description" select="'Something went wrong'"/>
+        </x:pending>
+    </x:scenario>
+</x:description>

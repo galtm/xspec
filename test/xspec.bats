@@ -57,7 +57,7 @@ load bats-helper
     myrun ../bin/xspec.sh
     [ "$status" -eq 1 ]
     assert_regex "${lines[2]}" '^XSpec v[1-9][0-9]*\.[0-9]+\.[0-9]+$'
-    [ "${lines[4]}" = "Usage: xspec [-t|-q|-s|-c|-j|-catalog file|-e|-h] file" ]
+    [ "${lines[4]}" = "Usage: xspec [-t|-q|-s|-p|-c|-j|-catalog file|-e|-h] file" ]
 }
 
 @test "invoking xspec without arguments prints version and usage even if Saxon environment variables are not defined" {
@@ -112,6 +112,24 @@ load bats-helper
     myrun ../bin/xspec.sh -t -q
     [ "$status" -eq 1 ]
     [ "${lines[0]}" = "-t and -q are mutually exclusive" ]
+}
+
+@test "invoking xspec with -p and -q prints error message" {
+    myrun ../bin/xspec.sh -p -q
+    [ "$status" -eq 1 ]
+    [ "${lines[0]}" = "-p and -q are mutually exclusive" ]
+}
+
+@test "invoking xspec with -p and -t prints error message" {
+    myrun ../bin/xspec.sh -p -t
+    [ "$status" -eq 1 ]
+    [ "${lines[0]}" = "-p and -t are mutually exclusive" ]
+}
+
+@test "invoking xspec with -p and -s prints error message" {
+    myrun ../bin/xspec.sh -p -s
+    [ "$status" -eq 1 ]
+    [ "${lines[0]}" = "-p and -s are mutually exclusive" ]
 }
 
 #
@@ -218,6 +236,12 @@ load bats-helper
 
 @test "invoking xspec -c -s prints error message" {
     myrun ../bin/xspec.sh -c -s ../tutorial/schematron/demo-01.xspec
+    [ "$status" -eq 1 ]
+    [ "${lines[0]}" = "Coverage is supported only for XSLT" ]
+}
+
+@test "invoking xspec -c -p prints error message" {
+    myrun ../bin/xspec.sh -c -p ../tutorial/xproc-testing-demo.xspec
     [ "$status" -eq 1 ]
     [ "${lines[0]}" = "Coverage is supported only for XSLT" ]
 }
@@ -697,6 +721,30 @@ load bats-helper
 
     [ "$status" -eq 0 ]
     [ "${lines[${#lines[@]} - 1]}" = "passed: 2 / pending: 0 / failed: 0 / total: 2" ]
+}
+
+#
+# Test cases for testing XProc steps
+#
+
+@test "Passing test cases for testing XProc steps" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+    # Run series of tests, and return error messages if anything fails
+    myrun java -jar "${XMLCALABASH3_JAR}" xproc/run-xproc-cases.xpl
+
+    assert_regex "${output}" $'\n''--- Testing completed with no failures! ---'$'\n'
+}
+
+@test "Error cases for testing XProc steps" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+    # Run series of tests, and indicate if anything does not raise error
+    myrun java -jar "${XMLCALABASH3_JAR}" xproc/run-xproc-error-cases.xpl
+
+    assert_regex "${output}" $'\n''--- Each test raised an error, which was expected. ---'$'\n'
 }
 
 #
@@ -2392,6 +2440,12 @@ load bats-helper
     myrun ../bin/xspec.sh -s no-prefix.xspec
     [ "$status" -eq 1 ]
     [ "${lines[4]}" = "ERROR in Q{http://www.jenitennison.com/xslt/xspec}description: Missing @schematron." ]
+}
+
+@test "Error message when @xproc is missing" {
+    myrun ../bin/xspec.sh -p no-prefix.xspec
+    [ "$status" -eq 1 ]
+    [ "${lines[5]}" = "ERROR in Q{http://www.jenitennison.com/xslt/xspec}description: Missing @xproc." ]
 }
 
 #

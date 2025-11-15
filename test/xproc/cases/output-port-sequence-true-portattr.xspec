@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+    <x:scenario label="Request 0 documents">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="0"/>
+        </x:call>
+        <!-- Boolean @test with scoped $x:result -->
+        <x:expect label="Output port is empty" port="xproc-result" test="empty($x:result)"
+            result-type="empty-sequence()"/>
+    </x:scenario>
+    <x:scenario label="Request 1 document">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="1"/>
+        </x:call>
+        <!-- Match scoped $x:result with no filtering -->
+        <x:expect label="Output port has 1 document" port="xproc-result" select="/"
+            result-type="document-node(element(output-document))">
+            <output-document/>
+        </x:expect>
+        <!-- Scoped $x:result is context item for x:expect/@test -->
+        <x:expect label="and its outermost element's local name is 'output-document'"
+            port="xproc-result" test="local-name(child::*)" select="'output-document'"/>
+        <x:expect label="Same thing with dot syntax"
+            port="xproc-result" test="local-name(./child::*)" select="'output-document'"/>
+    </x:scenario>
+    <x:scenario label="Request 2 documents">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="2"/>
+        </x:call>
+        <!-- Filter scoped $x:result -->
+        <x:expect label="Output port has 2 documents" port="xproc-result"
+            test="$x:result => count()" select="2"/>
+        <x:expect label="and they're both output-document elements" port="xproc-result"
+            result-type="document-node(element(output-document))+" select="(/,/)">
+            <output-document/>
+        </x:expect>
+    </x:scenario>
+</x:description>

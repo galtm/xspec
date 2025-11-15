@@ -31,6 +31,7 @@
    -->
    <xsl:include href="base/main.xsl" />
    <xsl:include href="xslt/main.xsl" />
+   <xsl:include href="xslt/main-submodules.xsl" />
 
 </xsl:stylesheet>
 

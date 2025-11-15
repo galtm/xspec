@@ -30,8 +30,9 @@
 
    <p:variable name="test-dir" select="resolve-uri('.')"/>
    <p:directory-list path="{$test-dir}" max-depth="1" include-filter="\.xspec$"/>
+   <p:variable name="case-count" select="count(//c:file)"/>
 
-   <p:for-each>
+   <p:for-each message="Found {$case-count} test cases.">
       <p:with-input select="//c:file"/>
       <p:variable name="test-filename" select="/*/@name"/>
       <p:load href="{$test-dir}{$test-filename}" name="test-file"/>

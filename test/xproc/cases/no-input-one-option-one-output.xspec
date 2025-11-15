@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+    <x:scenario label="No input, one option set to number, one output">
+        <x:call step="s:no-input-one-option-one-output">
+            <x:option name="attrval" select="1"/>
+        </x:call>
+        <x:expect label="Document with root and attr=1" test="$x:result?xproc-result"
+            select="/"><root attr="1"/></x:expect>
+    </x:scenario>
+    <x:scenario label="No input, one option set to string, one output">
+        <x:call step="s:no-input-one-option-one-output">
+            <x:option name="attrval" select="'one'"/>
+        </x:call>
+        <x:expect label="Document with root and attr=one" test="$x:result?xproc-result"
+            select="/"><root attr="one"/></x:expect>
+    </x:scenario>
+    <x:scenario label="No input, one option unset, one output">
+        <x:call step="s:no-input-one-option-one-output"/>
+        <x:expect label="Document with root and attr=''" test="$x:result?xproc-result"
+            select="/"><root attr=""/></x:expect>
+    </x:scenario>
+</x:description>

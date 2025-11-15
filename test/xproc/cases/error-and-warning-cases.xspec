@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+
+    <x:scenario label="Scenarios for testing compute-position.xsl">
+        <x:scenario label="Unknown step">
+            <x:call step="s:nonexistent">
+                <x:input name="source"/>
+            </x:call>
+        </x:scenario>
+        <x:scenario label="Unknown input">
+            <x:call step="s:one-input-no-option-one-output">
+                <x:input name="nonexistent"/>
+            </x:call>
+        </x:scenario>
+        <x:scenario label="Step with use-when on p:input">
+            <x:call step="s:input-port-with-use-when">
+                <x:input name="source" select="/">
+                    <my-source/>
+                </x:input>
+                <x:input name="aux" select="()"/>
+            </x:call>
+            <!-- Warning case, not an error -->
+            <x:expect label="is called assuming use-when is true" port="result" select="/">
+                <output aux-element="document-at-aux-port"/>
+            </x:expect>
+        </x:scenario>
+    </x:scenario>
+</x:description>

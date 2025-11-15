@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+    <x:scenario label="Request 0 documents">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="0"/>
+        </x:call>
+        <x:expect label="Output port is empty" test="empty($x:result?xproc-result)"/>
+    </x:scenario>
+    <x:scenario label="Request 1 document">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="1"/>
+        </x:call>
+        <x:expect label="Output port has 1 document" test="$x:result?xproc-result"
+            select="/">
+            <output-document/>
+        </x:expect>
+    </x:scenario>
+    <x:scenario label="Request 2 documents">
+        <x:call step="s:output-port-sequence-true">
+            <x:option name="num" select="2"/>
+        </x:call>
+        <x:expect label="Output port has 2 documents" test="$x:result?xproc-result => count()"
+            select="2"/>
+        <x:expect label="and they're both output-document elements" test="$x:result?xproc-result"
+            select="(/,/)">
+            <output-document/>
+        </x:expect>
+    </x:scenario>
+</x:description>

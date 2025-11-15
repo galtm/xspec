@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:s="x-urn:test:xproc:steplibrary"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xproc="library.xpl">
+    <x:scenario label="Empty input">
+        <x:call step="s:input-port-sequence-true">
+            <x:input name="source" select="()"/>
+        </x:call>
+        <x:expect label="The step counted 0 input documents"
+            test="$x:result?xproc-result => number()" select="0"/>
+    </x:scenario>
+    <x:scenario label="One input document">
+        <x:call step="s:input-port-sequence-true">
+            <x:input name="source" select="/">
+                <document/>
+            </x:input>
+        </x:call>
+        <x:expect label="The step counted 1 input document"
+            test="$x:result?xproc-result => number()" select="1"/>
+    </x:scenario>
+    <x:scenario label="Two input documents">
+        <x:call step="s:input-port-sequence-true">
+            <x:input name="source" select="(/,/)">
+                <document/>
+            </x:input>
+        </x:call>
+        <x:expect label="The step counted 2 input documents"
+            test="$x:result?xproc-result => number()" select="2"/>
+    </x:scenario>
+</x:description>
