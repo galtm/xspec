@@ -234,6 +234,10 @@ while printf "%s\n" "$1" | grep -- ^- > /dev/null 2>&1; do
                 usage "-s and -t are mutually exclusive"
                 exit 1
             fi
+            if test -n "$XPROC"; then
+                usage "-p and -t are mutually exclusive"
+                exit 1
+            fi
             XSLT=1
             ;;
         # XQuery
@@ -246,6 +250,10 @@ while printf "%s\n" "$1" | grep -- ^- > /dev/null 2>&1; do
                 usage "-s and -q are mutually exclusive"
                 exit 1
             fi
+            if test -n "$XPROC"; then
+                usage "-p and -q are mutually exclusive"
+                exit 1
+            fi
             XQUERY=1
             ;;
         # Schematron
@@ -256,6 +264,10 @@ while printf "%s\n" "$1" | grep -- ^- > /dev/null 2>&1; do
             fi
             if test -n "$XSLT"; then
                 usage "-s and -t are mutually exclusive"
+                exit 1
+            fi
+            if test -n "$XPROC"; then
+                usage "-p and -s are mutually exclusive"
                 exit 1
             fi
             SCHEMATRON=1
@@ -321,7 +333,7 @@ else
 fi
 
 # set XSLT if XQuery and XProc have not been set (XSLT is the default)
-if ([ -z "$XQUERY" ] && [ -z "$XPROC" ]) ; then
+if [ -z "$XQUERY" ] && [ -z "$XPROC" ]; then
     XSLT=1
 fi
 
@@ -437,9 +449,9 @@ else
         if test -n "$XPROC"; then
             # For XProc
             xslt-with-pipeline "${saxon_custom_options_array[@]}" \
-            -o:"$RESULT" -xsl:"$COMPILED" \
-            -it:"{http://www.jenitennison.com/xslt/xspec}main" \
-            || die "Error running the test suite"
+                -o:"$RESULT" -xsl:"$COMPILED" \
+                -it:"{http://www.jenitennison.com/xslt/xspec}main" \
+                || die "Error running the test suite"
         else
             # for XQuery
             xquery "${saxon_custom_options_array[@]}" \
