@@ -38,8 +38,8 @@ The XSpec processing must be able to:
 4. Can't test a step that doesn't have `@type`.
 5. Can't test a local substep declared within a step.
 6. Can't test a standard step, only custom ones.
-7. Whether or not a step's input port declares default document(s), the XSpec scenario for that step must provide `<x:input>` for the port.
-8. If a step has `use-when` on any child `<p:input>` element, the testing behavior displays a warning like `WARNING in x:input (named source): Calling step Q{x-urn:example}my-step assumes each p:input/@use-when is true.`. Not sure if this limitation can be removed.
+7. Whether or not a step's input port declares default document(s), the XSpec scenario for that step must provide `<x:input>` for the port. That is, you can't omit `<x:input>` and pick up the default.
+8. If a step has `use-when` on any child `<p:input>` element, XSpec doesn't know whether that input port is actually part of the step. Not sure if this limitation can be removed; for now, XSpec displays a warning and proceeds as if the `use-when` expression is true.
 9. Can't specify configuration of the XProc processor on a per-scenario basis.
 
 ## Vocabulary and Markup Design
@@ -65,14 +65,18 @@ _Outside_ an `<x:expect>` element having a `port` attribute, if `$x:result` is d
 
 So far in my in-progress work, the `x:run-xproc` step runs faster than the Windows command script.
 
-Sample syntaxes from root of XSpec repository:
+Sample syntaxes from root of XSpec repository, assuming `XMLCALABASH3_JAR` is set to the path to `xmlcalabash-app-3.0.27.jar` (or latest available version):
 
 ```
 java -jar %XMLCALABASH3_JAR% --input:source=tutorial/xproc/xproc-testing-demo.xspec --output:result=tutorial/xproc/xproc-testing-demo-xprocresult.html src/xproc3/xproc-testing/run-xproc.xpl
+```
 
+```
 set SAXON_CP=%XMLCALABASH3_JAR%
 bin\xspec.bat -p tutorial\xproc\xproc-testing-demo.xspec
 ```
+
+The demo XSpec file in the syntaxes above has a deliberate failure. Look at the generated HTML report to see how the failure appears there.
 
 I _think_ Saxon-PE and Saxon-EE users can follow the advice in [Upgrading Saxon](https://docs.xmlcalabash.com/userguide/current/running.html#upgrading-saxon) when running XSpec tests for XProc, but I haven't tried it.
 
