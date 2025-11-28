@@ -768,7 +768,7 @@ load bats-helper
         skip "XMLCALABASH3_JAR is not defined"
     fi
     # Run series of tests, and indicate if anything does not raise the expected error
-    myrun java -jar "${XMLCALABASH3_JAR}" xproc/run-xproc-error-cases.xpl
+    myrun java -jar "${XMLCALABASH3_JAR}" xproc/run-xproc-compiler-error-cases.xpl
 
     assert_regex "${output}" $'\n''--- Each test raised the expected error. ---'$'\n'
 }
