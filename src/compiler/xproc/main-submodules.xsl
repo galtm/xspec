@@ -12,12 +12,14 @@
     <xsl:include href="compile/compile-scenario.xsl"/>
     <xsl:include href="compile/compute-position.xsl"><!-- Specific to XProc --></xsl:include>
     <xsl:include href="../xslt/declare-variable/declare-variable.xsl"/>
+    <xsl:include href="declare-variable/selection-from-doc.xsl" />
     <!--<xsl:include href="../xslt/external/transform-options.xsl" />-->
     <xsl:include href="initial-check/perform-initial-check.xsl"/>
     <xsl:include href="../xslt/invoke-compiled/invoke-compiled-current-scenario-or-expect.xsl"/>
     <xsl:include href="../xslt/invoke-compiled/threads.xsl"/>
     <xsl:include href="../xslt/measure-time/timestamp.xsl"/>
     <xsl:include href="../xslt/node-constructor/node-constructor.xsl"/>
-    <xsl:include href="../xslt/report/report-utils.xsl"/>
+    <xsl:include href="report/report-utils.xsl"/>
+    <xsl:import href="../xslt/report/report-utils.xsl"/>
 
 </xsl:stylesheet>

@@ -340,7 +340,7 @@
       <div id="{@id}" class="xTestReport">
 
          <xsl:variable name="result" as="element(x:result)"
-            select="(x:result, parent::x:scenario/x:result)[1]" />
+            select="(x:result, x:port-specific/x:result, parent::x:scenario/x:result)[1]" />
 
          <h4 class="xTestReportTitle">
             <xsl:apply-templates select="x:label" mode="#current" />

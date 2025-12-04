@@ -58,19 +58,7 @@
 
          <xsl:choose>
             <xsl:when test="$temp-doc-uqname">
-               <!-- When testing XProc, if you embed nodes for an expected result and aren't
-                  filtering the actual result via @test, then you should receive a document node
-                  for each outermost embedded node. That is desirable because an XProc step that
-                  returns a node always returns a document node. -->
-               <xsl:variable name="xproc-wraps-embedded-nodes" expand-text="yes"
-                  as="xs:string">. ! {x:known-UQName('wrap:wrap-nodes')}(.)</xsl:variable>
-               <xsl:variable name="selection" as="xs:string" select="
-                     (
-                     @select,
-                     '.'[current()/@href],
-                     $xproc-wraps-embedded-nodes[current()/self::x:expect[@port][not(@test)]],
-                     'node()'
-                     )[1]"/>
+               <xsl:variable name="selection" as="xs:string" select="x:selection-from-doc(current())"/>
                <xsl:attribute name="select">
                   <xsl:text expand-text="yes">${$temp-doc-uqname} ! ( {$selection} )</xsl:text>
                </xsl:attribute>

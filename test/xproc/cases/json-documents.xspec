@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:h="http://www.w3.org/1999/xhtml"
-    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc" xmlns:s="x-urn:test:xproc:steplibrary"
-    xmlns:wrap="urn:x-xspec:common:wrap" xmlns:x="http://www.jenitennison.com/xslt/xspec"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" xproc="library-content-types.xpl">
+    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
+    xmlns:s="x-urn:test:xproc:steplibrary" xmlns:wrap="urn:x-xspec:common:wrap"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xproc="library-content-types.xpl">
     <x:helper xproc="../../../src/xproc3/xproc-testing/wrap-standard-steps.xpl"/>
     <x:scenario label="s:json-join for arrays, using external JSON file and embedded array">
         <x:scenario label="using pf:load()">

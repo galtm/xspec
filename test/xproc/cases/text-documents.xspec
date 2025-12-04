@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xspec-test min-xmlcalabash-version=3.0.30?>
 <x:description xmlns:h="http://www.w3.org/1999/xhtml"
-    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc" xmlns:s="x-urn:test:xproc:steplibrary"
-    xmlns:wrap="urn:x-xspec:common:wrap" xmlns:x="http://www.jenitennison.com/xslt/xspec"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" xproc="library-content-types.xpl">
+    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
+    xmlns:s="x-urn:test:xproc:steplibrary" xmlns:wrap="urn:x-xspec:common:wrap"
+    xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xproc="library-content-types.xpl">
     <x:helper xproc="../../../src/xproc3/xproc-testing/wrap-standard-steps.xpl"/>
 
     <x:variable name="text-file-as-string" as="xs:string"
@@ -85,8 +86,7 @@
             </x:call>
             <x:expect label="returns a sequence of document nodes," port="xproc-result"
                 test="$x:result instance of document-node()+"/>
-            <x:expect label="two of them," port="xproc-result"
-                test="count($x:result)" select="2"/>
+            <x:expect label="two of them," port="xproc-result" test="count($x:result)" select="2"/>
             <x:expect label="each containing a text node" port="xproc-result"
                 test="every $doc in $x:result satisfies $doc/node() instance of text()"/>
         </x:scenario>

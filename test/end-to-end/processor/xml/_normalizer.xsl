@@ -18,7 +18,7 @@
 				out: <x:report xspec="../path/to/test.xspec">
 	-->
 	<xsl:template as="attribute()" match="
-			/x:report/attribute()[name() = ('query-at', 'schematron', 'xspec')]
+			/x:report/attribute()[name() = ('query-at', 'schematron', 'xspec', 'xproc')]
 			| /x:report[not(@schematron)]/@stylesheet
 			| x:scenario/@xspec
 			| x:scenario/input-wrap/x:call/x:param/@href

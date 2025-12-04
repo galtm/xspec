@@ -7,4 +7,6 @@
 	<system systemId="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
 		uri="wrap-standard-steps.xpl" />
 
+	<system systemId="http://www.jenitennison.com/xslt/xspec/xproc/helpers/wrap-nodes"
+		uri="wrap-nodes.xsl" />
 </catalog>

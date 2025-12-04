@@ -50,7 +50,10 @@
                   <xsl:sequence select="@original-xspec | @schematron" />
 
                   <!-- Global XProc attributes. -->
-                  <xsl:sequence select="@xproc" />
+                  <xsl:for-each select="@xproc">
+                     <xsl:attribute name="{local-name()}" namespace="{namespace-uri()}"
+                        select="resolve-uri(., base-uri())" />
+                  </xsl:for-each>
 
                   <!-- Global XQuery attributes.
                      @query-at is handled by compile-xquery-tests.xsl -->
