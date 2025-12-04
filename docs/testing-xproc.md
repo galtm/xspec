@@ -54,7 +54,7 @@ Proposed markup changes:
 1. For verifying results, `<x:expect>` works the same as in a test for XSLT or XQuery, with the following exception. For optionally focusing a given `<x:expect>` element on a particular output port, add `port` attribute (thanks for the idea, Sheila Thomson!). Consequences:
    1. Within that `<x:expect>` element only, XSpec defines `$x:result` as the document(s) at the specified output port.
    1. The `x:expect/@result-type` attribute pertains to this port-specific output.
-   1. For an element `x:expect[@port][not(@test)][node()]`, the embedded nodes are automatically wrapped in a document node, even without specifying `select="/"`. This is different from the XSpec behavior for testing XSLT and XQuery, which could be potentially confusing. The motivation for this inconsistency is that nodes returned from XProc are always rooted at a document node, and all the extra `select="/"` attributes are clutter.
+   1. For an element `x:expect[@port][not(@test)][not(@select)][node()]`, each outermost embedded node is automatically wrapped in a document node. This is different from the XSpec behavior for testing XSLT and XQuery. The inconsistency could be potentially confusing, but the motivation is that nodes returned from XProc are always rooted at a document node. Having to specify `select="/"` all over the place would be clutter.
    1. If `x:expect[@port][not(@test)]` fails, the left side of a diff in the HTML test report shows the port-specific output.
 
 _Outside_ an `<x:expect>` element having a `port` attribute, if `$x:result` is defined, then its value is a map with an entry for each output port of the step. In each map entry, the key is the output port name and the value is the document(s) at that output port.
@@ -69,7 +69,7 @@ _Outside_ an `<x:expect>` element having a `port` attribute, if `$x:result` is d
 
 So far in my in-progress work, the `x:run-xproc` step runs faster than the command script or Ant script, at least on Windows.
 
-Sample syntaxes from root of XSpec repository, assuming `XMLCALABASH3_JAR` is set to the path to `xmlcalabash-app-3.0.27.jar` (or latest available version):
+Sample syntaxes from root of XSpec repository, assuming `XMLCALABASH3_JAR` is set to the path to `xmlcalabash-app-3.0.30.jar` (or latest available version):
 
 ```
 java -jar %XMLCALABASH3_JAR% --input:source=tutorial/xproc/xproc-testing-demo.xspec --output:result=tutorial/xproc/xproc-testing-demo-xprocresult.html src/xproc3/xproc-testing/run-xproc.xpl
@@ -91,7 +91,7 @@ My implementation depends on the "pipelineception" feature (thanks, Norm Tovey-W
 ## Questions
 
 1. Are the limitations acceptable, including the dependency on the nonstandard pipelineception feature of XML Calabash?
-1. Is the ability to omit `select="/"' on `<x:expect>` elements that meet certain criteria useful for conciseness or is it confusing/mysterious?
+1. Is the ability to omit `select="/"` on `<x:expect>` elements that meet certain criteria useful for conciseness or is it confusing/mysterious?
 1. Does an XSpec test suite need the ability to provide a value for a static XProc option in a library? I'm not sure if it's possible, but I can explore if needed.
 1. Are there considerations that need attention that I might not have thought of?
 1. What should/can XSpec offer for testing steps that have side effects? For instance, your step writes a file to disk, and you want to delete a stale file before or after running the test suite. The existing XSpec test runner doesn't support setup/cleanup operations that occur before/after running test scenarios. You can potentially use an outside-XSpec driver that performs setup, then calls XSpec to run test scenarios, and then performs cleanup. Is that good enough? (Are side effects more prevalent with XProc than XSLT or XQuery? If not, this is a pre-existing problem that might not need to block the initial support for testing XProc.)

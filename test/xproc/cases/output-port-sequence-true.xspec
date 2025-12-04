@@ -34,12 +34,16 @@
         <x:call step="s:output-port-sequence-true">
             <x:option name="num" select="2"/>
         </x:call>
-        <x:expect label="Output port has 2 documents" port="xproc-result"
+        <x:expect
+            label="Output port has 2 documents, each with output-document as outermost element"
+            port="xproc-result" result-type="document-node(element(output-document))+"
             test="$x:result => count()" select="2"/>
-        <x:expect label="and they're both output-document elements." port="xproc-result"
-            result-type="document-node(element(output-document))+" select="(/,/)">
+        <x:expect label="x:expect[@port][not(@test)][not(@select)] can embed 2 outermost elements"
+            port="xproc-result">
+            <output-document/>
             <output-document/>
         </x:expect>
+        <!-- Next, select="/" is needed because x:expect uses @test to filter $x:result -->
         <x:expect label="x:expect can individually verify the first document" port="xproc-result"
             test="$x:result[1]" select="/">
             <output-document/>

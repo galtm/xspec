@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:c="http://www.w3.org/ns/xproc-step"
-    xmlns:x="http://www.jenitennison.com/xslt/xspec"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:map="http://www.w3.org/2005/xpath-functions/map"
+<p:library xmlns:p="http://www.w3.org/ns/xproc" xmlns:x="http://www.jenitennison.com/xslt/xspec"
     version="3.1">
 
     <!-- Represent a version number for XML Calabash as a scalar integer in a way that
@@ -15,10 +12,11 @@
         <p:xslt>
             <p:with-input port="stylesheet">
                 <xsl:stylesheet exclude-result-prefixes="#all" version="3.0"
-                    xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                    xmlns:x="http://www.jenitennison.com/xslt/xspec"
+                    xmlns:xs="http://www.w3.org/2001/XMLSchema"
                     xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
                     <xsl:include href="../../src/common/version-utils.xsl"/>
-                    <xsl:template match=".">
+                    <xsl:template match="." as="xs:integer">
                         <xsl:sequence select="string(.)
                             ! concat('0.',.) (: x:extract version expects 2 or 4 digits, not 3 :)
                             => x:extract-version()

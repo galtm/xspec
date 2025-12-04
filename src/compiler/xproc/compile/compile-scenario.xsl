@@ -64,9 +64,6 @@
             </xsl:call-template>
          </xsl:message>
       </xsl:if>
-      <xsl:if test="$run-sut-now">
-         <xsl:call-template name="x:check-param-max-position" />
-      </xsl:if>
       <xsl:if test="x:expect and empty($call)">
          <xsl:message terminate="yes">
             <xsl:call-template name="x:prefix-diag-message">
