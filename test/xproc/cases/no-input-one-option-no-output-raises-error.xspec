@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xspec-test min-xmlcalabash-version=3.0.26?>
+<?xspec-test min-xmlcalabash-version=3.0.31?>
 <x:description xmlns:s="x-urn:test:xproc:steplibrary"
     xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xproc="library.xpl">
@@ -18,7 +18,7 @@
             test="$x:result?err?description instance of xs:string"/>
         <x:expect label="that, when parsed as XML, equals the source document of p:error."
             result-type="map(xs:string, map(*))" test="$x:result?err?description => parse-xml()"
-            select="/" pending="Needs fix for xmlcalabash3 issue #413">
+            select="/">
             <document>Something went wrong</document>
         </x:expect>
     </x:scenario>

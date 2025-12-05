@@ -20,8 +20,6 @@
 
       <!-- URIQualifiedNames of the (required) parameters of the template being generated -->
       <xsl:param name="param-uqnames" as="xs:string*" required="yes" />
-      
-      <xsl:variable name="xproc-port-specific" as="xs:boolean" select="exists(@port)"/>
 
       <xsl:element name="xsl:template" namespace="{$x:xsl-namespace}">
          <xsl:attribute name="name" select="x:known-UQName('x:' || @id)" />
@@ -35,19 +33,10 @@
             <param name="{.}" as="item()*" required="yes" />
          </xsl:for-each>
 
-         <xsl:if test="$xproc-port-specific and empty($reason-for-pending)">
-            <!-- XProc: Within this x:expect element, scope $x:result to specified output port. -->
-            <if test="not('{@port}' = map:keys(${x:known-UQName('x:result')}))" xmlns:map="http://www.w3.org/2005/xpath-functions/map">
-               <message terminate="yes">
-                  <xsl:call-template name="x:prefix-diag-message">
-                     <xsl:with-param name="message"
-                        expand-text="yes">No result for output port '{@port}'.</xsl:with-param>
-                  </xsl:call-template>
-               </message>
-            </if>
-            <variable name="{x:known-UQName('x:result')}" as="item()*"
-               select="${x:known-UQName('x:result')}?{@port}"/>
-         </xsl:if>
+         <xsl:apply-templates select="." mode="scope-result-variable"
+            use-when="$test-type eq 'xproc'">
+            <xsl:with-param name="reason-for-pending" select="$reason-for-pending"/>
+         </xsl:apply-templates>
 
          <message>
             <xsl:if test="exists($reason-for-pending)">
@@ -67,9 +56,9 @@
                <xsl:with-param name="comment" select="'expected result'" />
             </xsl:apply-templates>
 
-            <!-- Flags for deq:deep-equal() enclosed in ''. -->
+            <!-- Flags for deq:deep-equal() -->
             <xsl:variable name="deep-equal-flags" as="xs:string"
-               select="$x:apos || '1'[$xslt-version eq 1] || 'd'[$xproc-port-specific] || $x:apos" />
+               select="x:deep-equal-flags(., $xslt-version)" />
 
             <xsl:comment> flag if @result-type is present but $x:result is not the right type </xsl:comment>
             <variable name="{x:known-UQName('impl:result-type-mismatch')}"
@@ -78,37 +67,7 @@
 
             <xsl:choose>
                <xsl:when test="@test">
-                  <xsl:comment> wrap $x:result into a document node if possible </xsl:comment>
-                  <!-- This variable declaration could be moved from here (the
-                     template generated from x:expect) to the template
-                     generated from x:scenario. It depends only on
-                     $x:result, so could be computed only once. -->
-                  <variable name="{x:known-UQName('impl:test-items')}" as="item()*">
-                     <xsl:choose>
-                        <xsl:when test="$xproc-port-specific">
-                           <!-- XProc: Don't wrap $x:result. If a port produces multiple document nodes,
-                              wrapping them would cause their contents to be merged, which would interfere
-                              with verifying the documents. -->
-                           <sequence select="${x:known-UQName('x:result')}" />
-                        </xsl:when>
-                        <xsl:otherwise>
-                           <choose>
-                              <!-- From trying this out, it seems like it's useful for the test
-                                 to be able to test the nodes that are generated in the
-                                 $x:result as if they were *children* of the context node.
-                                 Have to experiment a bit to see if that really is the case.
-                                 TODO: To remove. Use directly $x:result instead. (expath/xspec#14) -->
-                              <when
-                                 test="exists(${x:known-UQName('x:result')}) and {x:known-UQName('wrap:wrappable-sequence')}(${x:known-UQName('x:result')})">
-                                 <sequence select="{x:known-UQName('wrap:wrap-nodes')}(${x:known-UQName('x:result')})" />
-                              </when>
-                              <otherwise>
-                                 <sequence select="${x:known-UQName('x:result')}" />
-                              </otherwise>
-                           </choose>                           
-                        </xsl:otherwise>
-                     </xsl:choose>
-                  </variable>
+                  <xsl:call-template name="define-impl-test-items"/>
 
                   <xsl:comment> evaluate the predicate with $x:result (or its wrapper document node) as context item if it is a single item; if not, evaluate the predicate without context item </xsl:comment>
                   <variable name="{x:known-UQName('impl:test-result')}" as="item()*">
@@ -226,17 +185,15 @@
                      <xsl:call-template name="x:report-test-attribute">
                         <xsl:with-param name="attribute-local-name" select="'result-type'"/>
                      </xsl:call-template>
-                     <xsl:if test="$xproc-port-specific">
-                        <xsl:call-template name="x:record-port-specific-result"/>
-                     </xsl:if>
+                     <xsl:call-template name="x:record-port-specific-result"
+                        use-when="$test-type eq 'xproc'"/>
                   </when>
                   <xsl:if test="exists(@test)">
                      <when test="${x:known-UQName('impl:boolean-test')}">
                         <!-- For failure due to boolean x:expect/@test, record @test. -->
                         <xsl:call-template name="x:report-test-attribute" />
-                        <xsl:if test="$xproc-port-specific">
-                           <xsl:call-template name="x:record-port-specific-result"/>
-                        </xsl:if>
+                        <xsl:call-template name="x:record-port-specific-result"
+                           use-when="$test-type eq 'xproc'"/>
                      </when>
                      <when test="not(${x:known-UQName('impl:boolean-test')})">
                         <!-- For failure due to non-boolean x:expect/@test, record @test and the result
@@ -249,9 +206,8 @@
                      </when>
                   </xsl:if>
                   <otherwise>
-                     <xsl:if test="$xproc-port-specific">
-                        <xsl:call-template name="x:record-port-specific-result"/>
-                     </xsl:if>
+                     <xsl:call-template name="x:record-port-specific-result"
+                        use-when="$test-type eq 'xproc'"/>
                      <!-- If there's no port-specific result, no data type mismatch, and no
                         x:expect/@test, there is nothing else to record here and the 'otherwise'
                         branch is empty. -->

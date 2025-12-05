@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xspec-test min-xmlcalabash-version=3.0.30?>
 <x:description xmlns:h="http://www.w3.org/1999/xhtml"
-    xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
+    xmlns:ps="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
     xmlns:s="x-urn:test:xproc:steplibrary" xmlns:wrap="urn:x-xspec:common:wrap"
     xmlns:x="http://www.jenitennison.com/xslt/xspec" xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xproc="library-content-types.xpl">
@@ -17,22 +17,22 @@
         select="wrap:wrap-nodes($text-file-as-text-node)"/>
 
     <x:scenario label="s:get-text-line using text from external file">
-        <x:scenario label="using pf:load()">
+        <x:scenario label="using ps:load()">
             <x:variable name="options-for-load" as="map(*)" select="map{
                 'href': 'document.txt' => resolve-uri($x:xspec-uri)
                 }"/>
             <x:call step="s:get-text-line">
-                <x:input port="source" select="pf:load($options-for-load)?result"
+                <x:input port="source" select="ps:load($options-for-load)?result"
                     as="document-node()"/>
             </x:call>
             <x:like label="verify returned text"/>
         </x:scenario>
-        <x:scenario label="using pf:load() for CSV file">
+        <x:scenario label="using ps:load() for CSV file">
             <x:variable name="options-for-load" as="map(*)" select="map{
                 'href': 'document.csv' => resolve-uri($x:xspec-uri)
                 }"/>
             <x:call step="s:get-text-line">
-                <x:input port="source" select="pf:load($options-for-load)?result"
+                <x:input port="source" select="ps:load($options-for-load)?result"
                     as="document-node()"/>
             </x:call>
             <x:like label="verify returned text"/>
@@ -93,16 +93,16 @@
     </x:scenario>
 
     <x:scenario label="Content type">
-        <x:scenario label="of txt input file loaded with pf:load()">
+        <x:scenario label="of txt input file loaded with ps:load()">
             <x:variable name="options-for-load" as="map(*)"
                 select="map{'href': 'document.txt' => resolve-uri($x:xspec-uri)}"/>
-            <x:variable name="text-input" select="pf:load($options-for-load)?result"/>
+            <x:variable name="text-input" select="ps:load($options-for-load)?result"/>
             <x:like label="check content type"/>
         </x:scenario>
-        <x:scenario label="of CSV input file loaded with pf:load()">
+        <x:scenario label="of CSV input file loaded with ps:load()">
             <x:variable name="options-for-load" as="map(*)"
                 select="map{'href': 'document.csv' => resolve-uri($x:xspec-uri)}"/>
-            <x:variable name="text-input" select="pf:load($options-for-load)?result"/>
+            <x:variable name="text-input" select="ps:load($options-for-load)?result"/>
             <x:like label="check content type"/>
         </x:scenario>
         <x:scenario label="of text node">

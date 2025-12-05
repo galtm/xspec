@@ -20,7 +20,7 @@
 
     <p:declare-step type="s:input-port-sequence-true">
         <p:documentation>This step outputs the number of input documents.</p:documentation>
-        <p:input port="source" sequence="true"/>
+        <p:input port="source" content-types="any" sequence="true"/>
         <p:output port="xproc-result" sequence="false"/>
         <p:count/>
     </p:declare-step>

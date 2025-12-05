@@ -210,6 +210,12 @@
 					</xsl:when>
 
 					<xsl:when test="
+						($test-type = ('p'))
+						and empty(environment-variable('XMLCALABASH3_JAR'))">
+						<xsl:text>Requires XML Calabash 3</xsl:text>
+					</xsl:when>
+
+					<xsl:when test="
 							($pis = 'require-xspec-issue-1156-fixed')
 							and
 							(

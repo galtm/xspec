@@ -14,8 +14,11 @@
 
     <!-- Entry point from generate-pipeline.xsl -->
     <xsl:template name="generate-imports" as="node()+">
+        <xsl:context-item as="document-node(element(x:description))" use="required"/>
         <xsl:comment>Import the pipeline referenced in x:description/@xproc</xsl:comment>
         <xsl:apply-templates select="x:description/@xproc"/>
+        <xsl:comment>Import a library that the test runner uses</xsl:comment>
+        <xsl:call-template name="import-function-wrappers"/>
         <xsl:sequence>
             <xsl:on-non-empty>
                 <xsl:comment>Import pipelines referenced by @xproc in x:helper,
@@ -43,6 +46,13 @@
         <xsl:variable name="resolved-uri" select="
                 resolve-uri(., base-uri())
                 => x:resolve-xml-uri-with-catalog()"/>
+        <p:import href="{$resolved-uri}"/>
+    </xsl:template>
+
+    <xsl:template name="import-function-wrappers" as="element(p:import)">
+        <xsl:variable name="resolved-uri" select="
+            resolve-uri('wrap-standard-functions.xpl')
+            => x:resolve-xml-uri-with-catalog()"/>
         <p:import href="{$resolved-uri}"/>
     </xsl:template>
 </xsl:stylesheet>

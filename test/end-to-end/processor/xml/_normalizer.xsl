@@ -22,6 +22,8 @@
 			| /x:report[not(@schematron)]/@stylesheet
 			| x:scenario/@xspec
 			| x:scenario/input-wrap/x:call/x:param/@href
+			| x:scenario/input-wrap/x:call/x:input/@href
+			| x:scenario/input-wrap/x:call/x:option/@href
 			| x:scenario/input-wrap/x:context/@href
 			|
 			/x:report[local:svrl-creator(.) eq 'skeleton']//x:scenario/x:result/content-wrap

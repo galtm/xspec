@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<p:library xmlns:pf="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
+<p:library xmlns:ps="http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-steps"
     xmlns:p="http://www.w3.org/ns/xproc" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.0">
 
     <!--
@@ -12,11 +12,11 @@
         <x:variable name="options-for-load" as="map(*)"
             select="map{'href': 'document-not-xhtml.html' => resolve-uri($x:xspec-uri)}"/>
         <x:call step="s:get-html-description">
-            <x:input port="source" select="pf:load($options-for-load)?result"/>
+            <x:input port="source" select="ps:load($options-for-load)?result"/>
         </x:call>
     -->
 
-    <p:declare-step type="pf:load" name="load">
+    <p:declare-step type="ps:load" name="load">
         <p:output port="result" sequence="true" content-types="any"/>
         <p:option name="href" required="true" as="xs:anyURI"/>
         <p:option name="parameters" as="map(xs:QName,item()*)?"/>
@@ -30,7 +30,7 @@
         </p:load>
     </p:declare-step>
 
-    <p:declare-step type="pf:cast-content-type" name="cast-content-type">
+    <p:declare-step type="ps:cast-content-type" name="cast-content-type">
         <p:input port="source" content-types="any"/>
         <p:output port="result" content-types="any"/>
         <p:option name="content-type" required="true" as="xs:string"/>

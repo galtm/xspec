@@ -129,16 +129,8 @@
             </xsl:element>
 
             <xsl:text>&#10;      </xsl:text><xsl:comment> info message </xsl:comment>
-            <!-- system-property() must be retrieved at run time -->
             <message>
-               <text>
-                  <xsl:text expand-text="yes">Testing with </xsl:text>
-               </text>
-               <value-of select="system-property('{x:known-UQName('xsl:product-name')}')" />
-               <text>
-                  <xsl:text> </xsl:text>
-               </text>
-               <value-of select="system-property('{x:known-UQName('xsl:product-version')}')" />
+               <xsl:apply-templates select="." mode="info-message"/>   
             </message>
 
             <xsl:comment> set up the result document (the report) </xsl:comment>

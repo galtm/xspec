@@ -9,10 +9,12 @@
    <!--
       Sub modules for main.xsl
    -->
+   <xsl:include href="main-info-message.xsl" />
    <xsl:include href="catch/try-catch.xsl" />
    <xsl:include href="compile/compile-expect.xsl" />
    <xsl:include href="compile/compile-helpers.xsl" />
    <xsl:include href="compile/compile-scenario.xsl" />
+   <xsl:include href="compile/scoped-result.xsl" />
    <xsl:include href="declare-variable/declare-variable.xsl" />
    <xsl:include href="declare-variable/selection-from-doc.xsl" />
    <xsl:include href="external/transform-options.xsl" />

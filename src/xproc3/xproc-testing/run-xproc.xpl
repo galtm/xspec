@@ -33,15 +33,12 @@
 
     <p:variable name="xproc-to-test" as="xs:anyURI"
         select="resolve-uri(/x:description/@xproc, /x:description/base-uri())"/>
-    <p:variable name="helper-uri" as="xs:anyURI*"
-        select="/x:description/x:helper/@xproc ! resolve-uri(., /x:description/base-uri())"/>
 
     <!-- Generate the pipeline we want to run. -->
     <p:xslt name="generate-pipeline">
         <p:with-input port="stylesheet" href="generate-pipeline.xsl"/>
         <p:with-option name="parameters" select="map{
             'xproc-uri': $xproc-to-test,
-            'helper-uri': $helper-uri,
             'xspec-home': $xspec-home,
             'force-focus': $force-focus,
             'html-report-theme': $html-report-theme
