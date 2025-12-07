@@ -27,7 +27,7 @@
 			</x:input>
 		</x:call>
 		<x:expect port="xproc-result" label="Found step defined in XProc helper file" test="ps:load(
-			map{ 'href': 'catalog-01:/example.xml' => resolve-uri($x:xspec-uri)}
+			map{ 'href': '01/example.xml' => resolve-uri($x:xspec-uri)}
 			)?result" href="example.xml"/>
 	</x:scenario>
 

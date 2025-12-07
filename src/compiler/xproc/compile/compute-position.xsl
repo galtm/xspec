@@ -88,7 +88,8 @@
         <!-- We might import the same pipeline multiple times, but non-circular duplication doesn't
         matter for later processing. Alternatively, we could remove duplicates by imitating the
         compiler's x:gather-descriptions function. -->
-        <xsl:variable name="resolved-href" as="xs:anyURI?" select="@href => resolve-uri(base-uri())"/>
+        <xsl:variable name="resolved-href" as="xs:anyURI?"
+            select="resolve-uri(@href, x:base-uri(.)) => x:resolve-xml-uri-with-catalog()"/>
         <xsl:if test="not($resolved-href = $import-stack)">
             <xsl:apply-templates select="$resolved-href => doc()" mode="#current">
                 <xsl:with-param name="import-stack" tunnel="yes"

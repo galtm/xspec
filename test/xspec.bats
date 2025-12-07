@@ -1386,6 +1386,24 @@ load bats-helper
     [ "${lines[${#lines[@]} - 2]}" = "BUILD SUCCESSFUL" ]
 }
 
+@test "Ant with catalog file path (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    myrun ant \
+        -buildfile ../build.xml \
+        -lib "${SAXON_ANT_LIB}" \
+        -lib "${APACHE_XMLRESOLVER_JAR}" \
+        -Dxspec.xmlcalabash.classpath="${XMLCALABASH3_JAR}" \
+        -Dtest.type=p \
+        -Dcatalog="test/catalog/01/catalog-public.xml;${PWD}/catalog/01/catalog-rewriteURI.xml" \
+        -Dxspec.xml="${PWD}/catalog/catalog-01_xproc.xspec"
+    [ "$status" -eq 0 ]
+    [ "${lines[${#lines[@]} - 16]}" = "     [xslt] passed: 4 / pending: 0 / failed: 0 / total: 4" ]
+    [ "${lines[${#lines[@]} - 2]}" = "BUILD SUCCESSFUL" ]
+}
+
 #
 # Catalog file URI (Ant)
 #
@@ -1430,6 +1448,25 @@ load bats-helper
         -Dxspec.xml="${PWD}/catalog/catalog-01_schematron.xspec"
     [ "$status" -eq 0 ]
     [ "${lines[${#lines[@]} - 16]}" = "     [xslt] passed: 5 / pending: 0 / failed: 0 / total: 5" ]
+    [ "${lines[${#lines[@]} - 2]}" = "BUILD SUCCESSFUL" ]
+}
+
+@test "Ant with catalog file URI (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    myrun ant \
+        -buildfile ../build.xml \
+        -lib "${SAXON_ANT_LIB}" \
+        -lib "${APACHE_XMLRESOLVER_JAR}" \
+        -Dxspec.xmlcalabash.classpath="${XMLCALABASH3_JAR}" \
+        -Dtest.type=p \
+        -Dcatalog="test/catalog/01/catalog-public.xml;file:${PWD}/catalog/01/catalog-rewriteURI.xml" \
+        -Dcatalog.is.uri=true \
+        -Dxspec.xml="${PWD}/catalog/catalog-01_xproc.xspec"
+    [ "$status" -eq 0 ]
+    [ "${lines[${#lines[@]} - 16]}" = "     [xslt] passed: 4 / pending: 0 / failed: 0 / total: 4" ]
     [ "${lines[${#lines[@]} - 2]}" = "BUILD SUCCESSFUL" ]
 }
 
@@ -1643,6 +1680,28 @@ load bats-helper
     [ "${lines[12]}" = "passed: 2 / pending: 0 / failed: 0 / total: 2" ]
 }
 
+@test "CLI with -catalog file path (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    space_dir="${work_dir}/cat a log ${RANDOM}"
+    if [ -z "${XMLRESOLVERORG_XMLRESOLVER_BUG_117_FIXED}" ]; then
+        space_dir="${work_dir}/catalog${RANDOM}"
+    fi
+
+    mkdir -p "${space_dir}/01"
+    cp catalog/catalog-01* "${space_dir}"
+    cp catalog/01/* "${space_dir}/01"
+
+    export SAXON_CP="${XMLCALABASH3_JAR}:${APACHE_XMLRESOLVER_JAR}"
+    myrun ../bin/xspec.sh -p \
+        -catalog "catalog/01/catalog-public.xml;${space_dir}/01/catalog-rewriteURI.xml" \
+        "${space_dir}/catalog-01_xproc.xspec"
+    [ "$status" -eq 0 ]
+    [ "${lines[18]}" = "passed: 4 / pending: 0 / failed: 0 / total: 4" ]
+}
+
 #
 # Catalog file URI (CLI) (-catalog)
 #
@@ -1690,6 +1749,19 @@ load bats-helper
     [ "$status" -eq 0 ]
     [ "${lines[3]}" = "Converting Schematron XSpec into XQuery XSpec..." ]
     [ "${lines[12]}" = "passed: 2 / pending: 0 / failed: 0 / total: 2" ]
+}
+
+@test "CLI with -catalog file URI (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    export SAXON_CP="${XMLCALABASH3_JAR}:${APACHE_XMLRESOLVER_JAR}"
+    myrun ../bin/xspec.sh -p \
+        -catalog "file:${PWD}/catalog/01/catalog-public.xml;file:${PWD}/catalog/01/catalog-rewriteURI.xml" \
+        catalog/catalog-01_xproc.xspec
+    [ "$status" -eq 0 ]
+    [ "${lines[18]}" = "passed: 4 / pending: 0 / failed: 0 / total: 4" ]
 }
 
 #
@@ -1752,6 +1824,28 @@ load bats-helper
     [ "${lines[25]}" = "passed: 5 / pending: 0 / failed: 0 / total: 5" ]
 }
 
+@test "CLI with XML_CATALOG file path (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    space_dir="${work_dir}/cat a log ${RANDOM}"
+    if [ -z "${XMLRESOLVERORG_XMLRESOLVER_BUG_117_FIXED}" ]; then
+        space_dir="${work_dir}/catalog${RANDOM}"
+    fi
+
+    mkdir -p "${space_dir}/01"
+    cp catalog/catalog-01* "${space_dir}"
+    cp catalog/01/* "${space_dir}/01"
+
+    export SAXON_CP="${XMLCALABASH3_JAR}:${APACHE_XMLRESOLVER_JAR}"
+    export XML_CATALOG="catalog/01/catalog-public.xml;${space_dir}/01/catalog-rewriteURI.xml"
+
+    myrun ../bin/xspec.sh -p "${space_dir}/catalog-01_xproc.xspec"
+    [ "$status" -eq 0 ]
+    [ "${lines[18]}" = "passed: 4 / pending: 0 / failed: 0 / total: 4" ]
+}
+
 #
 # Catalog file URI (CLI) (XML_CATALOG)
 #
@@ -1783,6 +1877,19 @@ load bats-helper
     myrun ../bin/xspec.sh -s "catalog/catalog-01_schematron.xspec"
     [ "$status" -eq 0 ]
     [ "${lines[25]}" = "passed: 5 / pending: 0 / failed: 0 / total: 5" ]
+}
+
+@test "CLI with XML_CATALOG file URI (XProc)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    export SAXON_CP="${XMLCALABASH3_JAR}:${APACHE_XMLRESOLVER_JAR}"
+    export XML_CATALOG="file:${PWD}/catalog/01/catalog-public.xml;file:${PWD}/catalog/01/catalog-rewriteURI.xml"
+
+    myrun ../bin/xspec.sh -p "catalog/catalog-01_xproc.xspec"
+    [ "$status" -eq 0 ]
+    [ "${lines[18]}" = "passed: 4 / pending: 0 / failed: 0 / total: 4" ]
 }
 
 #
