@@ -55,8 +55,7 @@ xslt-with-pipeline() {
     xslt \
         -s:"$XSPEC" \
         -xsl:"$XSPEC_HOME/src/xproc3/xproc-testing/generate-xproc-imports.xsl" \
-        -o:"${PIPELINES}" \
-        ${CATALOG:+"$CATALOG"}
+        -o:"${PIPELINES}"
     java \
         -Dxspec.coverage.ignore="${TEST_DIR}" \
         -Dxspec.coverage.xml="${COVERAGE_XML}" \
