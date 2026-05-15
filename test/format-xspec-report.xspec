@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description stylesheet="../src/reporter/format-xspec-report.xsl"
+	xmlns:fmt="urn:x-xspec:reporter:format-utils" xmlns:h="http://www.w3.org/1999/xhtml"
+	xmlns:x="http://www.jenitennison.com/xslt/xspec">
+
+	<x:scenario label="Scenario for testing date/time stamp">
+		<x:scenario label="Expected result in end-to-end test suite">
+			<x:context mode="x:html-report"
+				href="end-to-end/cases/expected/query/expect-empty-result.xml" select="/x:report"/>
+			<x:expect label="uses boilerplate date/time in readable format" as="element(h:p)"
+				test="//h:p[starts-with(., 'Tested: ')]">
+				<h:p>Tested: 1 January 2000 at 00:00</h:p>
+			</x:expect>
+		</x:scenario>
+		<x:scenario label="Report on another, arbitrary date/time stamp">
+			<x:context mode="x:html-report" href="format-xspec-report-datetime.xml"
+				select="/x:report"/>
+			<x:expect label="uses readable format for specified date/time" as="element(h:p)"
+				test="//h:p[starts-with(., 'Tested: ')]">
+				<h:p>Tested: 31 December 2025 at 01:02</h:p>
+			</x:expect>
+		</x:scenario>
+	</x:scenario>
+
+</x:description>

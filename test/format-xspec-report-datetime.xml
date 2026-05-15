@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.jenitennison.com/xslt/xspec"
+        xspec="../../expect-empty.xspec"
+        query="x-urn:test:mirror"
+        query-at="../../../../mirror.xqm"
+        date="2025-12-31T01:02:03Z">
+</report>
