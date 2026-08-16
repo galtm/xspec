@@ -27,6 +27,9 @@
 				<xsl:when test="$prefix eq 'config'">
 					<xsl:sequence select="'http://saxon.sf.net/ns/configuration'" />
 				</xsl:when>
+				<xsl:when test="$prefix eq 'convert'">
+					<xsl:sequence select="'http://basex.org/modules/convert'" />
+				</xsl:when>
 				<xsl:when test="$prefix eq 'deq'">
 					<xsl:sequence select="$x:deq-namespace" />
 				</xsl:when>
@@ -47,6 +50,9 @@
 				</xsl:when>
 				<xsl:when test="$prefix eq 'pf'">
 					<xsl:sequence select="'http://www.jenitennison.com/xslt/xspec/xproc/steps/wrap-standard-functions'" />
+				</xsl:when>
+				<xsl:when test="$prefix eq 'prof'">
+					<xsl:sequence select="'http://basex.org/modules/prof'" />
 				</xsl:when>
 				<xsl:when test="$prefix eq 'rep'">
 					<xsl:sequence select="$x:rep-namespace" />

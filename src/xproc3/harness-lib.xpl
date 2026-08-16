@@ -205,6 +205,7 @@
 
       <p:option name="xspec-home" as="xs:string?"/>
       <p:option name="force-focus" as="xs:string?"/>
+      <p:option name="processor" as="xs:string?"/>
       <p:option name="parameters" as="map(xs:QName,item()*)" select="map{}"/>
 
       <p:group>
@@ -237,7 +238,8 @@
             <p:with-input port="source" pipe="source@compile-xq"/>
             <p:with-input port="stylesheet" pipe="@compiler"/>
             <p:with-option name="parameters" select="map{
-               xs:QName('force-focus'): $force-focus
+               xs:QName('force-focus'): $force-focus,
+               xs:QName('processor'): $processor
                }"/>
 
          </p:xslt>

@@ -14,6 +14,7 @@
 
 <p:declare-step xmlns:p="http://www.w3.org/ns/xproc"
             xmlns:c="http://www.w3.org/ns/xproc-step"
+            xmlns:cx="http://xmlcalabash.com/ns/extensions"
             xmlns:t="http://www.jenitennison.com/xslt/xspec"
             xmlns:pkg="http://expath.org/ns/pkg"
             xmlns:xs="http://www.w3.org/2001/XMLSchema"
@@ -38,6 +39,7 @@
          Use 'false' when you are processing the unserialized document within XProc or want a smaller file.
          Defaults to 'true'.</p>
       <p>'junit-enabled' option: Whether to output a JUnit report. Values are 'true' and 'false'. Defaults to 'false'.</p>
+      <p>'processor' option: The name of the XQuery processor to use. Values are 'saxon' and 'basex'. Defaults to using the configuration default XQuery processor.</p>
    </p:documentation>
 
    <p:import href="harness-lib.xpl"/>
@@ -67,6 +69,8 @@
    <p:option name="html-report-theme" as="xs:string" select="'default'"/>
    <p:option name="inline-css" as="xs:string" values="('true','false')" select="'true'"/>
    <p:option name="junit-enabled" as="xs:string" values="('true','false')" select="'false'"/>
+   <!-- No @values attribute is defined so that `saxon` and `basex` can be in any case. -->
+   <p:option name="processor" as="xs:string?"/>
 
    <p:option name="parameters" as="map(xs:QName,item()*)" select="map{}"/>
 
@@ -74,10 +78,24 @@
       <p:with-option name="xspec-home" select="$xspec-home"/>
    </t:check-xspec-home>
 
+   <!-- Check processor option is valid for the XProc processor -->
+   <p:if test="not(empty($processor)) and (p:system-property('p:vendor-uri') ne 'https://xmlcalabash.com/')">
+      <!-- TODO: does the t:ERR004 need to be registered somewhere?
+           TODO: as 't:ERR004' appears to the user should it really be x:ERR004? -->
+      <p:error code="t:ERR004">
+         <p:with-input port="source">
+            <p:inline>
+               <message>processor option is only valid for the XML Calabash XProc processor.</message>
+            </p:inline>
+         </p:with-input>
+      </p:error>
+   </p:if>
+
    <!-- compile the suite into a query -->
    <t:compile-xquery name="compile" p:message="Creating Test Runner...">
       <p:with-option name="xspec-home" select="$xspec-home"/>
       <p:with-option name="force-focus" select="$force-focus"/>
+      <p:with-option name="processor" select="$processor"/>
       <p:with-option name="parameters" select="$parameters"/>
    </t:compile-xquery>
 
@@ -85,11 +103,42 @@
    <t:extract-xquery name="queryText"/>
 
    <!-- run it on Saxon bundled with XML Calabash 3 (default) or another
-      XQuery processor, based on XProc processor configuration -->
-   <p:xquery name="run" message="&#10;Running Tests...">
-      <p:with-input port="source"><p:empty/></p:with-input>
-      <p:with-input port="query" pipe="@queryText"/>
-   </p:xquery>
+      XQuery processor, based on 'processor' option or else the XProc configuration -->
+   <p:choose name="run">
+      <p:when test="lower-case($processor) eq 'saxon'">
+         <p:output port="result" />
+         <p:xquery message="&#10;Running Tests..." cx:processor="https://saxonica.com/">
+            <p:with-input port="source"><p:empty/></p:with-input>
+            <p:with-input port="query" pipe="@queryText"/>
+         </p:xquery>
+      </p:when>
+      <p:when test="lower-case($processor) eq 'basex'">
+         <p:output port="result" />
+         <p:xquery message="&#10;Running Tests..." cx:processor="https://basex.org/">
+            <p:with-input port="source"><p:empty/></p:with-input>
+            <p:with-input port="query" pipe="@queryText"/>
+         </p:xquery>
+      </p:when>
+      <p:when test="not(empty($processor))">
+         <p:output port="result" />
+         <!-- TODO: does the t:ERR005 need to be registered somewhere?
+              TODO: as 't:ERR005id' appears to the user should it really be x:ERR005? -->
+         <p:error code="t:ERR005">
+            <p:with-input port="source">
+               <p:inline>
+                  <message>processor option for XQuery must be saxon or basex, value is {$processor}.</message>
+               </p:inline>
+            </p:with-input>
+         </p:error>
+      </p:when>
+      <p:otherwise>
+         <p:output port="result" />
+         <p:xquery message="&#10;Running Tests...">
+            <p:with-input port="source"><p:empty/></p:with-input>
+            <p:with-input port="query" pipe="@queryText"/>
+         </p:xquery>
+      </p:otherwise>
+   </p:choose>
 
    <!-- format the report -->
    <t:format-report p:message="&#10;Formatting Report..." name="format-report">

@@ -19,9 +19,21 @@
       <xsl:text> } {&#x0A;</xsl:text>
 
       <!-- @at must be evaluated at run time -->
-      <xsl:text>attribute { QName('', 'at') } { </xsl:text>
-      <xsl:value-of select="x:known-UQName('saxon:timestamp')" />
-      <xsl:text>() },&#x0A;</xsl:text>
+      <xsl:choose>
+         <xsl:when test="lower-case($processor) eq 'saxon'">
+            <xsl:text>attribute { QName('', 'at') } { </xsl:text>
+            <xsl:value-of select="x:known-UQName('saxon:timestamp')" />
+            <xsl:text>() },&#x0A;</xsl:text>
+         </xsl:when>
+         <!-- TODO: should 'current-ns' be used -->
+         <xsl:when test="lower-case($processor) eq 'basex'">
+            <xsl:text>attribute { QName('', 'at') } { </xsl:text>
+            <xsl:value-of select="x:known-UQName('convert:integer-to-dateTime')" />
+            <xsl:text>(</xsl:text>
+            <xsl:value-of select="x:known-UQName('prof:current-ms')" />
+            <xsl:text>()) },&#x0A;</xsl:text>
+         </xsl:when>
+      </xsl:choose>
 
       <!-- @event -->
       <xsl:variable name="event-attribute" as="attribute(event)">

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:x="http://www.jenitennison.com/xslt/xspec"
-                xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                          xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 exclude-result-prefixes="#all"
                 version="3.0">
 
@@ -18,9 +19,21 @@
       <xsl:text>'err': map {&#x0A;</xsl:text>
 
       <!-- Variables available within the catch clause:
-         https://www.w3.org/TR/xquery-31/#id-try-catch -->
+         https://www.w3.org/TR/xquery-31/#id-try-catch expanded in values
+           https://qt4cg.org/specifications/xquery-40/xquery-40.html#id-try-catch -->
+      <xsl:variable name="err-keys" as="xs:string+">
+         <xsl:choose>
+            <xsl:when test="$processor eq 'basex'">
+              <xsl:sequence select="'code', 'description', 'value', 'module', 'line-number', 'column-number', 'stack-trace', 'additional'" />
+            </xsl:when>
+            <xsl:otherwise>
+               <xsl:sequence select="'code', 'description', 'value', 'module', 'line-number', 'column-number', 'additional'" />
+            </xsl:otherwise>
+         </xsl:choose>
+      </xsl:variable>
+
       <xsl:for-each
-         select="'code', 'description', 'value', 'module', 'line-number', 'column-number', 'additional'">
+         select="$err-keys">
          <xsl:text expand-text="yes">'{.}': ${x:known-UQName('err:' || .)}</xsl:text>
          <xsl:if test="position() ne last()">
             <xsl:text>,</xsl:text>
