@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<collection xmlns="x-urn:xspec:test:xspec-bat"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="x-urn:xspec:test:xspec-bat collection.xsd">
+    <!--
+        Simple test for using XQuery with BaseX (XQuery with BaseX)
+    -->
+   <case name="CLI with -processor basex (XQuery with BaseX)" ifdef="BASEX_JAR">
+        call :run ..\bin\xspec.bat -q -processor basex basex-soundex.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x basex-soundex-compiled.xq
+        call :verify_line 2 x basex-soundex-result.html
+        call :verify_line 3 x basex-soundex-result.xml
+   </case>
+
+   <case name="Ant with xspec.xquery.processor basex (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="basex" ^
+            -Dxspec.basex.classpath="%BASEX_JAR%" ^
+            -Dxspec.xml="%CD%\basex-soundex.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 4
+        call :verify_line 1 x basex-soundex_xml-to-properties.xml
+        call :verify_line 2 x basex-soundex-compiled.xq
+        call :verify_line 3 x basex-soundex-result.html
+        call :verify_line 4 x basex-soundex-result.xml
+   </case>
+
+   <case name="XML Calabash with processor basex (XQuery with BaseX)"
+         ifdef="BASEX_JAR XMLCALABASH3_DIR XMLCALABASH3_JAR">
+        call :run java -cp "%XMLCALABASH3_JAR%;%XMLCALABASH3_DIR%\extra\*;%BASEX_JAR%" ^
+            com.xmlcalabash.app.Main ^
+            --input:source=basex-soundex.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/basex-soundex-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^
+            processor=basex 
+
+        call :verify_retval 0
+        call :verify_line -1 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+   </case>
+
+
+   <!--
+         Simple test for using XQuery with Saxon (XQuery with Saxon)
+    -->
+   <case name="CLI with -processor saxon (XQuery with saxon)">
+        call :run ..\bin\xspec.bat -q -processor saxon transform.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x transform-compiled.xq
+        call :verify_line 2 x transform-result.html
+        call :verify_line 3 x transform-result.xml
+   </case>
+
+   <case name="Ant with xspec.xquery.processor saxon (XQuery with saxon)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="saxon" ^
+            -Dxspec.xml="%CD%\transform.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 4
+        call :verify_line 1 x transform_xml-to-properties.xml
+        call :verify_line 2 x transform-compiled.xq
+        call :verify_line 3 x transform-result.html
+        call :verify_line 4 x transform-result.xml
+   </case>
+
+   <case name="XML Calabash with processor saxon (XQuery with Saxon)"
+         ifdef="XMLCALABASH3_JAR">
+        call :run java -jar "%XMLCALABASH3_JAR%" ^
+            --input:source=transform.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/transform-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^
+            processor=saxon 
+
+        call :verify_retval 0
+        call :verify_line -1 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+   </case>
+
+
+   <!--
+         Test using XQuery with mixed case BaseX (XQuery with BaseX)
+    -->
+   <case name="CLI with -processor BaseX (XQuery with BaseX)" ifdef="BASEX_JAR">
+        call :run ..\bin\xspec.bat -q -processor BaseX basex-soundex.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor BaseX (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="BaseX" ^
+            -Dxspec.basex.classpath="%BASEX_JAR%" ^
+            -Dxspec.xml="%CD%\basex-soundex.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="XML Calabash with processor BaseX (XQuery with BaseX)"
+         ifdef="BASEX_JAR XMLCALABASH3_DIR XMLCALABASH3_JAR">
+        call :run java -cp "%XMLCALABASH3_JAR%;%XMLCALABASH3_DIR%\extra\*;%BASEX_JAR%" ^
+            com.xmlcalabash.app.Main ^
+            --input:source=basex-soundex.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/basex-soundex-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^
+            processor=BaseX 
+
+        call :verify_retval 0
+        call :verify_line -1 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+
+   <!--
+         Test using XQuery with mixed case Saxon (XQuery with Saxon)
+    -->
+   <case name="CLI with -processor Saxon (XQuery with Saxon)" ifdef="BASEX_JAR">
+        call :run ..\bin\xspec.bat -q -processor Saxon transform.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor Saxon (XQuery with Saxon)"
+         ifdef="BASEX_JAR">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="Saxon" ^
+            -Dxspec.basex.classpath="%BASEX_JAR%" ^
+            -Dxspec.xml="%CD%\transform.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="XML Calabash with processor Saxon (XQuery with Saxon)"
+         ifdef="XMLCALABASH3_JAR">
+        call :run java -jar "%XMLCALABASH3_JAR%" ^
+            --input:source=transform.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/transform-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^
+            processor=Saxon 
+
+        call :verify_retval 0
+        call :verify_line -1 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+
+   <!--
+         Test with XQuery processor not set (XQuery with Saxon)
+    -->
+   <case name="CLI with no processor value (XQuery with Saxon)">
+        call :run ..\bin\xspec.bat -q transform.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="Ant with no processor value (XQuery with Saxon)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xml="%CD%\transform.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+   <case name="XML Calabash with no processor value (XQuery with Saxon)"
+         ifdef="XMLCALABASH3_JAR">
+        call :run java -jar "%XMLCALABASH3_JAR%" ^
+            --input:source=transform.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/transform-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" 
+
+        call :verify_retval 0
+        call :verify_line -1 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+   </case>
+
+
+   <!--
+        BASEX_CUSTOM_OPTIONS / basex.custom.options (XQuery with BaseX)
+    -->
+   <case name="CLI with BASEX_CUSTOM_OPTIONS (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        set "BASEX_CUSTOM_OPTIONS=-bQ{x-urn:test:xspec-global-override}external-value_vs_global-variable=override -bQ{x-urn:test:xspec-global-override}empty-external-value_vs_global-variable= -bQ{x-urn:test:xspec-global-override}non-external-value_vs_global-variable=override"
+        call :run ..\bin\xspec.bat -q -processor basex global-override-query.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 3 / pending: 0 / failed: 0 / total: 3"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\global-override-query-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\global-override-query-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x global-override-query-compiled.xq
+        call :verify_line 2 x global-override-query-result.html
+        call :verify_line 3 x global-override-query-result.xml
+   </case>
+
+   <case name="Ant with basex.custom.options (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="basex" ^
+            -Dbasex.custom.options="-bQ{x-urn:test:xspec-global-override}external-value_vs_global-variable=override -bQ{x-urn:test:xspec-global-override}empty-external-value_vs_global-variable= -bQ{x-urn:test:xspec-global-override}non-external-value_vs_global-variable=override" ^
+            -Dxspec.basex.classpath="%BASEX_JAR%" ^
+            -Dxspec.xml="%CD%\basex-soundex.xspec"
+
+        call :verify_retval 0
+        call :verify_line -16 x "     [xslt] passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 4
+        call :verify_line 1 x basex-soundex_xml-to-properties.xml
+        call :verify_line 2 x basex-soundex-compiled.xq
+        call :verify_line 3 x basex-soundex-result.html
+        call :verify_line 4 x basex-soundex-result.xml
+   </case>
+
+
+   <!--
+         CLI - XSLT with XQUERY_PROCESSOR set (shows value is ignored if test type not XQuery)
+    -->
+   <case name="CLI with XQUERY_PROCESSOR basex (Schematron with XSLT)">
+        set "XQUERY_PROCESSOR=basex"
+        call :run ..\bin\xspec.bat -s ../tutorial/schematron/demo-01.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 3 / pending: 0 / failed: 0 / total: 3"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\demo-01-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\demo-01-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+   </case>
+
+
+   <!--
+         CLI - XQuery with BaseX using XQUERY_PROCESSOR
+    -->
+   <case name="CLI with XQUERY_PROCESSOR basex (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        set "XQUERY_PROCESSOR=basex"
+        call :run ..\bin\xspec.bat -q basex-soundex.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x basex-soundex-compiled.xq
+        call :verify_line 2 x basex-soundex-result.html
+        call :verify_line 3 x basex-soundex-result.xml
+   </case>
+
+   <case name="CLI with XQUERY_PROCESSOR BaseX (XQuery with BaseX)"
+         ifdef="BASEX_JAR">
+        set "XQUERY_PROCESSOR=BaseX"
+        call :run ..\bin\xspec.bat -q basex-soundex.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\basex-soundex-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x basex-soundex-compiled.xq
+        call :verify_line 2 x basex-soundex-result.html
+        call :verify_line 3 x basex-soundex-result.xml
+   </case>
+
+
+   <!--
+         CLI - XQuery with Saxon using XQUERY_PROCESSOR
+    -->
+   <case name="CLI with XQUERY_PROCESSOR saxon (XQuery with Saxon)">
+        set "XQUERY_PROCESSOR=saxon"
+        call :run ..\bin\xspec.bat -q transform.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x transform-compiled.xq
+        call :verify_line 2 x transform-result.html
+        call :verify_line 3 x transform-result.xml
+   </case>
+
+   <case name="CLI with XQUERY_PROCESSOR Saxon (XQuery with Saxon)">
+        set "XQUERY_PROCESSOR=Saxon"
+        call :run ..\bin\xspec.bat -q transform.xspec
+
+        call :verify_retval 0
+        call :verify_line -3 x "passed: 1 / pending: 0 / failed: 0 / total: 1"
+        
+        rem HTML report file contains the (default) blackwhite CSS theme
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl STYLE-CONTAINS=test-report-colors-blackwhite.css
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem HTML report file contains CSS inline
+        call :run java -cp "%SAXON_CP%" net.sf.saxon.Transform ^
+            -s:"%TEST_DIR%\transform-result.html" ^
+            -xsl:check-html-css.xsl
+        call :verify_retval 0
+        call :verify_line 1 x "true"
+        
+        rem * Default set of files
+        call :run dir /b /o:n "%TEST_DIR%"
+        call :verify_line_count 3
+        call :verify_line 1 x transform-compiled.xq
+        call :verify_line 2 x transform-result.html
+        call :verify_line 3 x transform-result.xml
+   </case>
+
+
+   <!--
+         Error Tests - XQuery with invalid 'processor' value
+    -->
+   <case name="CLI with -processor bogus (XQuery)">
+        call :run ..\bin\xspec.bat -q -processor bogus ../tutorial/xquery-tutorial.xspec
+
+        call :verify_retval 1
+        call :verify_line 1 x "-processor option for XQuery must be saxon or basex, value is bogus"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor bogus (XQuery)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="q" ^
+            -Dxspec.xquery.processor="bogus" ^
+            -Dxspec.xml="%CD%\../tutorial/xquery-tutorial.xspec"
+
+        call :verify_retval 1
+        call :verify_line -3 r ".* Invalid xspec\.xquery\.processor: 'bogus'"
+   </case>
+
+   <case name="XML Calabash with -processor bogus (XQuery)"
+         ifdef="XMLCALABASH3_JAR">
+        call :run java -jar "%XMLCALABASH3_JAR%" ^
+            --input:source=../tutorial/xquery-tutorial.xspec ^
+            --output:result="file:///%TEST_DIR:\=/%/xquery-tutorial-result.html" ^
+            ..\src\xproc3\run-xquery.xpl ^
+            xspec-home="file:///%PARENT_DIR_ABS:\=/%/" ^
+            processor=bogus 
+
+        call :verify_retval 1
+        call :verify_line -1 r "Error: t:ERR005.* processor option for XQuery must be saxon or basex, value is bogus"
+   </case>
+
+
+   <!--
+         Error Tests - 'processor' not allowed for the test type (value of file name and processor are not used)
+    -->
+   <case name="CLI with -processor for default test type (XSLT)">
+        call :run ..\bin\xspec.bat -processor bogus ../tutorial/escape-for-regex.xspec
+
+        call :verify_retval 1
+        call :verify_line 1 x "-processor option is not supported for this test type"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor for default test type (XSLT)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dxspec.xquery.processor="saxon" ^
+            -Dxspec.xml="%CD%\../tutorial/escape-for-regex.xspec"
+
+        call :verify_retval 1
+        call :verify_line -3 r ".*xspec\.xquery\.processor is supported only with test\.type of 'q'"
+   </case>
+
+   <case name="CLI with -processor for wrong test type (XSLT)">
+        call :run ..\bin\xspec.bat -t -processor bogus ../tutorial/escape-for-regex.xspec
+
+        call :verify_retval 1
+        call :verify_line 1 x "-processor option is not supported for this test type"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor for wrong test type (XSLT)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="t" ^
+            -Dxspec.xquery.processor="saxon" ^
+            -Dxspec.xml="%CD%\../tutorial/escape-for-regex.xspec"
+
+        call :verify_retval 1
+        call :verify_line -3 r ".*xspec\.xquery\.processor is supported only with test\.type of 'q'"
+   </case>
+
+   <case name="CLI with -processor for wrong test type (Schematron)">
+        call :run ..\bin\xspec.bat -s -processor bogus ../tutorial/schematron/demo-03.xspec
+
+        call :verify_retval 1
+        call :verify_line 1 x "-processor option is not supported for this test type"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor for wrong test type (Schematron)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="s" ^
+            -Dxspec.xquery.processor="saxon" ^
+            -Dxspec.xml="%CD%\../tutorial/schematron/demo-03.xspec"
+
+        call :verify_retval 1
+        call :verify_line -3 r ".*xspec\.xquery\.processor is supported only with test\.type of 'q'"
+   </case>
+
+   <case name="CLI with -processor for wrong test type (XProc)">
+        SET SAXON_CP="%XMLCALABASH3_JAR%"
+        call :run ..\bin\xspec.bat -p -processor bogus ../tutorial/xproc/xproc-testing-demo.xspec
+
+        call :verify_retval 1
+        call :verify_line 1 x "-processor option is not supported for this test type"
+   </case>
+
+   <case name="Ant with xspec.xquery.processor for wrong test type (XProc)">
+        call :run ant ^
+            -buildfile=../build.xml ^
+            -lib "%SAXON_ANT_LIB%" ^
+            -Dtest.type="p" ^
+            -Dxspec.xquery.processor="saxon" ^
+            -Dxspec.xmlcalabash.classpath="%XMLCALABASH3_JAR%" ^
+            -Dxspec.xml="%CD%\../tutorial/xproc/xproc-testing-demo.xspec"
+
+        call :verify_retval 1
+        call :verify_line -3 r ".*xspec\.xquery\.processor is supported only with test\.type of 'q'"
+   </case>
+
+</collection>
