@@ -1230,6 +1230,7 @@ load bats-helper
     # Also check that MORGANAXPROC_CONFIG is ignored if processor in effect is not MorganaXProc
     export MORGANAXPROC_CONFIG=nonexistent-file.xml
     myrun ../bin/xspec.sh -p -processor xmlcalabash xproc/cases/one-input-no-option-one-output.xspec
+    [ "$status" -eq 0 ]
     assert_regex "${lines[7]}" '^Testing with .* and XML Calabash '
 }
 
@@ -1276,6 +1277,39 @@ load bats-helper
     myrun ../bin/xspec.sh -processor xmlcalabash -s mytest.xspec
     [ "$status" -eq 1 ]
     [ "${lines[0]}" = "${MSG}" ]
+}
+
+#
+# xspec.xproc.processor in tests for XProc (Ant)
+#   XML Calabash is the default. Cases that use MorganaXProc-III
+#   are in morganaxproc.bats and collection-morganaxproc.xml.
+#
+
+@test "xspec.xproc.processor set to xmlcalabash uses XML Calabash (Ant)" {
+    if [ -z "${XMLCALABASH3_JAR}" ]; then
+        skip "XMLCALABASH3_JAR is not defined"
+    fi
+
+    myrun ant \
+        -buildfile ../build.xml \
+        -lib "${XMLCALABASH3_JAR}" \
+        -Dxspec.xmlcalabash.classpath="${XMLCALABASH3_JAR}" \
+        -Dtest.type=p \
+        -Dxspec.xml="${PWD}/xproc/cases/one-input-no-option-one-output.xspec"
+    [ "$status" -eq 0 ]
+    assert_regex "${output}" $'\n''     \[java\] Testing with .* and XML Calabash '
+}
+
+@test "xspec.xproc.processor value must be xmlcalabash or morganaxproc (Ant)" {
+    myrun ant \
+        -buildfile ../build.xml \
+        -lib "${XMLCALABASH3_JAR}" \
+        -Dxspec.xmlcalabash.classpath="${XMLCALABASH3_JAR}" \
+        -Dxspec.xproc.processor=bogus \
+        -Dtest.type=p \
+        -Dxspec.xml="${PWD}/xproc/cases/one-input-no-option-one-output.xspec"
+    [ "$status" -eq 1 ]
+    assert_regex "${lines[${#lines[@]} - 3]}" '.+ xspec\.xproc\.processor value must be xmlcalabash or morganaxproc, but value is bogus'
 }
 
 #
