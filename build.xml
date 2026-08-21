@@ -650,14 +650,15 @@
   </target>
 
   <target name="xproc-test-error-checking" depends="compile" if="${xspec.is.xproc}">
-    <condition property="xspec.xproc.using.morganaxproc" else="false">
+    <condition property="xspec.xproc.processor.is.morganaxproc" else="false">
       <equals arg1="${xspec.xproc.processor}" arg2="morganaxproc" />
     </condition>
-    <condition property="xspec.xproc.using.xmlcalabash" else="false">
-      <isfalse value="${xspec.xproc.using.morganaxproc}" />
+    <condition property="xspec.xproc.processor.is.xmlcalabash" else="false">
+      <isfalse value="${xspec.xproc.processor.is.morganaxproc}" />
     </condition>
-    <fail
-      message="xspec.xproc.processor value must be xmlcalabash or morganaxproc, but value is ${xspec.xproc.processor}">
+
+    <!-- Verify "xspec.xproc.processor" -->
+    <fail message="Invalid xspec.xproc.processor: '${xspec.xproc.processor}'">
       <condition>
         <not>
           <or>
@@ -667,20 +668,24 @@
         </not>
       </condition>
     </fail>
+
+    <!-- Verify "xspec.xmlcalabash.classpath" -->
     <fail message="XProc testing with XML Calabash requires the xspec.xmlcalabash.classpath property">
       <condition>
         <and>
-          <istrue value="${xspec.xproc.using.xmlcalabash}" />
+          <istrue value="${xspec.xproc.processor.is.xmlcalabash}" />
           <not>
             <isset property="xspec.xmlcalabash.classpath"/>
           </not>
         </and>
       </condition>
     </fail>
+
+    <!-- Verify "xspec.morganaxproc.init" -->
     <fail message="XProc testing with MorganaXProc-III requires the xspec.morganaxproc.init property">
       <condition>
         <and>
-          <istrue value="${xspec.xproc.using.morganaxproc}" />
+          <istrue value="${xspec.xproc.processor.is.morganaxproc}" />
           <not>
             <isset property="xspec.morganaxproc.init"/>
           </not>
@@ -708,9 +713,9 @@
     <java classname="net.sf.saxon.Transform" fork="true" failonerror="true">
       <!-- System property for XProc -->
       <sysproperty key="com.xmlcalabash.pipelines"
-        value="${xspec.pipelines.url}" if:set="xspec.xproc.using.xmlcalabash"/>
+        value="${xspec.pipelines.url}" if:set="xspec.xproc.processor.is.xmlcalabash"/>
       <sysproperty key="com.xml_project.morganaxproc.pipeline"
-        value="${xspec.pipelines.url}" if:set="xspec.xproc.using.morganaxproc"/>
+        value="${xspec.pipelines.url}" if:set="xspec.xproc.processor.is.morganaxproc"/>
       <sysproperty key="${xspec.xproc.config.key}"
         value="${xspec.xproc.config.value}" if:set="xspec.xproc.config.key"/>
       <!-- XML Calabash must be on the classpath ahead of java.class.path. -->
@@ -732,7 +737,7 @@
     </java>    
   </target>
 
-  <target name="run-xproc-setup-morganaxproc" depends="generate-pipeline-file" if="${xspec.xproc.using.morganaxproc}">
+  <target name="run-xproc-setup-morganaxproc" depends="generate-pipeline-file" if="${xspec.xproc.processor.is.morganaxproc}">
     <condition property="xspec.step.function.init.class"
       value="com.xml_project.morganaxproc3.saxon13connector.RegisterXProcStepsAsFunctions">
       <equals arg1="${xspec.morganaxproc.init}" arg2="saxon13" />
@@ -749,7 +754,7 @@
       value="${xspec.morganaxproc.config}" if:set="xspec.morganaxproc.config"/>    
   </target>
 
-  <target name="run-xproc-setup-xmlcalabash" depends="generate-pipeline-file" if="${xspec.xproc.using.xmlcalabash}">
+  <target name="run-xproc-setup-xmlcalabash" depends="generate-pipeline-file" if="${xspec.xproc.processor.is.xmlcalabash}">
     <property name="xspec.step.function.init.class"
       value="com.xmlcalabash.api.RegisterSaxonFunctions"/>
     

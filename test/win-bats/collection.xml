@@ -1108,7 +1108,7 @@
         -Dtest.type=p ^
         -Dxspec.xml="%CD%\xproc\cases\one-input-no-option-one-output.xspec"
     call :verify_retval 1
-    call :verify_line -3 r "..* xspec\.xproc\.processor value must be xmlcalabash or morganaxproc, but value is bogus"
+    call :verify_line -3 r "..* Invalid xspec\.xproc\.processor: 'bogus'"
 	</case>
 
 	<!--

@@ -1309,7 +1309,7 @@ load bats-helper
         -Dtest.type=p \
         -Dxspec.xml="${PWD}/xproc/cases/one-input-no-option-one-output.xspec"
     [ "$status" -eq 1 ]
-    assert_regex "${lines[${#lines[@]} - 3]}" '.+ xspec\.xproc\.processor value must be xmlcalabash or morganaxproc, but value is bogus'
+    assert_regex "${lines[${#lines[@]} - 3]}" ".+ Invalid xspec\.xproc\.processor: 'bogus'"
 }
 
 #
