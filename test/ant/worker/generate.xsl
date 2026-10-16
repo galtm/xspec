@@ -257,7 +257,11 @@
 
 					<xsl:when test="
 						($pis = 'require-xspec-issue-7127-fixed')
-						and ($x:saxon-version eq x:pack-version((13, 0)))">
+						and ($x:saxon-version = (
+							x:pack-version((13, 0)),
+							x:pack-version((13, 1))
+						))">
+						<!-- 7127 is closed but underlying XSpec problem remains: https://saxonica.plan.io/issues/7308 -->
 						<xsl:text>Requires Saxon issue 7127 to have been fixed</xsl:text>
 					</xsl:when>
 
