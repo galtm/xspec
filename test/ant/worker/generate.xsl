@@ -220,6 +220,15 @@
 					</xsl:when>
 
 					<xsl:when test="
+						($test-type ne 'q')
+						and
+						(environment-variable('GITHUB_ACTIONS') eq 'true')
+						and
+						(environment-variable('XQUERY_PROCESSOR') eq 'basex')">
+						<xsl:text>Restrict testing to XQuery</xsl:text>
+					</xsl:when>
+
+					<xsl:when test="
 							($pis = 'require-xspec-issue-1156-fixed')
 							and
 							(
