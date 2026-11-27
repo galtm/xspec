@@ -30,6 +30,9 @@ jobs:
             env: basex
           - java: 17
             env: basex
+          - os: macos-latest
+            java: 17
+            env: saxon-13
 
     steps:
       - uses: actions/checkout@v7

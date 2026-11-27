@@ -1,0 +1,45 @@
+name: On-demand test configurations
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - ci-test-extra
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    env:
+      XSPEC_TEST_ENV: ${{ matrix.env }}
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        include:
+          - os: macos-latest
+            java: 17
+            env: saxon-13
+          - os: macos-latest
+            java: 21
+            env: basex
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: ${{ 'temurin' }}
+
+      - name: Run tests for *nix
+        run: >
+          source test/ci/npm-ci.sh
+          && source test/ci/install-deps.sh
+          && test/ci/print-env.sh
+          && test/ci/run-core-tests.sh
+          && test/ci/maven-package.sh -q
+          && test/ci/compile-java.sh -silent
+          && test/ci/last-git-status.sh
+          && test/ci/test-maven-jar.sh -silent
