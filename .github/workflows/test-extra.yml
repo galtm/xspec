@@ -1,10 +1,10 @@
-name: On-demand test configurations
+name: Test Configurations on Demand
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - ci-test-extra
+    paths:
+      - .github/workflows/test-extra.yml
 
 jobs:
   test:
