@@ -5,6 +5,9 @@ on:
   push:
     paths:
       - .github/workflows/test-extra.yml
+  schedule:
+    - cron: '45 23 * * SUN'
+      timezone: 'America/New_York'
 
 jobs:
   test:
